@@ -4,9 +4,9 @@ import { Terminal, Cpu, GitBranch, ExternalLink } from 'lucide-react';
 
 /* ─────────────────────────────────────────────
    Stage helpers
-   Stage 1: 0  – 33   → Serene text
-   Stage 2: 34 – 66   → Image (center stage)
-   Stage 3: 67 – 100  → Cyberpunk image bg + terminal
+   Stage 1:  0–33  → Sleek Minimal Dark
+   Stage 2: 34–66  → Project mockup (center stage)
+   Stage 3: 67–100 → Hardcore Terminal (Void + violet borders)
 ───────────────────────────────────────────── */
 const getStage = (d) => (d <= 33 ? 1 : d <= 66 ? 2 : 3);
 
@@ -26,19 +26,23 @@ const glitchSlide = {
 };
 
 /* ─────────────────────────────────────────────
-   STAGE 1 — Serene / Watercolor
+   STAGE 1 — Sleek Minimal Dark
 ───────────────────────────────────────────── */
 function SereneView({ stateA, tags }) {
     return (
         <motion.div key="serene" variants={fadeSlide} initial="initial" animate="animate" exit="exit"
             className="flex flex-col gap-4">
-            <p className="italic leading-relaxed text-base" style={{ color: '#1e293b', opacity: 0.82 }}>
+            <p className="leading-relaxed text-base" style={{ color: 'rgba(248,250,252,0.72)', fontFamily: 'var(--font-sans)' }}>
                 {stateA}
             </p>
             <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => (
                     <span key={tag} className="px-3 py-1 text-xs font-medium rounded-full"
-                        style={{ background: '#dcedc1', color: '#1e293b', border: '1px solid #a8e6cf' }}>
+                        style={{
+                            background: 'rgba(45,212,191,0.1)',
+                            color: '#2DD4BF',
+                            border: '1px solid rgba(45,212,191,0.25)',
+                        }}>
                         {tag}
                     </span>
                 ))}
@@ -48,83 +52,83 @@ function SereneView({ stateA, tags }) {
 }
 
 /* ─────────────────────────────────────────────
-   STAGE 2 — Project Image (center stage)
+   STAGE 2 — Project Image
 ───────────────────────────────────────────── */
 function ImageView({ image, title }) {
     return (
         <motion.div key="image" variants={fadeSlide} initial="initial" animate="animate" exit="exit"
             className="flex flex-col gap-3">
             <div className="relative overflow-hidden rounded-lg"
-                style={{ aspectRatio: '16/9', background: '#f1f5f9', border: '1px solid #e2e8f0' }}>
+                style={{ aspectRatio: '16/9', background: '#0D0D14', border: '1px solid rgba(45,212,191,0.15)' }}>
                 <img
                     src={image}
                     alt={`${title} mockup`}
                     className="w-full h-full object-cover"
                     style={{ display: 'block' }}
                 />
-                {/* Soft radial vignette */}
+                {/* Subtle dark vignette */}
                 <div style={{
                     position: 'absolute', inset: 0,
-                    background: 'radial-gradient(ellipse at center, transparent 50%, rgba(255,255,255,0.4) 100%)',
+                    background: 'radial-gradient(ellipse at center, transparent 50%, rgba(5,5,10,0.55) 100%)',
                     pointerEvents: 'none',
                 }} />
             </div>
-            <p className="text-xs text-center font-medium" style={{ color: '#94a3b8' }}>
-                ↑ Project Mockup — drag deeper to reveal implementation details
+            <p className="text-xs text-center font-medium" style={{ color: '#475569', fontFamily: 'var(--font-mono)' }}>
+                // project_mockup — drag deeper to expose internals
             </p>
         </motion.div>
     );
 }
 
 /* ─────────────────────────────────────────────
-   STAGE 3 — Cyberpunk: image bg + terminal overlay
+   STAGE 3 — Hardcore Terminal
 ───────────────────────────────────────────── */
 function GlitchView({ stateB, tags, title, image }) {
     return (
         <motion.div key="glitch" variants={glitchSlide} initial="initial" animate="animate" exit="exit"
             className="flex flex-col gap-3">
 
-            {/* Image with cyberpunk CSS filter — always visible as background */}
-            <div className="relative overflow-hidden rounded-lg" style={{ aspectRatio: '16/9' }}>
+            {/* Image with hardcore cyberpunk filter */}
+            <div className="relative overflow-hidden rounded-sm" style={{ aspectRatio: '16/9' }}>
                 <img
                     src={image}
                     alt={`${title} background`}
                     className="w-full h-full object-cover"
                     style={{
                         display: 'block',
-                        filter: 'contrast(1.6) saturate(0.15) brightness(0.3) hue-rotate(200deg)',
+                        filter: 'contrast(1.7) saturate(0.1) brightness(0.25) hue-rotate(270deg)',
                     }}
                 />
 
-                {/* Dark overlay with pink/cyan gradient sheen */}
+                {/* Violet/fuchsia gradient overlay */}
                 <div style={{
                     position: 'absolute', inset: 0,
-                    background: 'linear-gradient(135deg, rgba(9,9,11,0.85) 0%, rgba(255,0,127,0.07) 50%, rgba(6,182,212,0.05) 100%)',
+                    background: 'linear-gradient(135deg, rgba(5,5,10,0.9) 0%, rgba(217,70,239,0.06) 50%, rgba(45,212,191,0.04) 100%)',
                     pointerEvents: 'none',
                 }} />
 
                 {/* Scanlines */}
                 <div style={{
                     position: 'absolute', inset: 0,
-                    background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.22) 2px, rgba(0,0,0,0.22) 4px)',
+                    background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.25) 2px, rgba(0,0,0,0.25) 4px)',
                     pointerEvents: 'none',
                 }} />
 
-                {/* Terminal content on top of the image */}
+                {/* Terminal content */}
                 <div className="absolute inset-0 p-3 flex flex-col gap-1.5 overflow-hidden"
                     style={{ fontFamily: 'var(--font-mono)' }}>
-                    {/* Terminal window bar */}
+                    {/* Window bar */}
                     <div className="flex items-center gap-1.5 mb-1">
-                        <div className="w-2 h-2 rounded-full" style={{ background: '#ff007f', boxShadow: '0 0 5px #ff007f' }} />
-                        <div className="w-2 h-2 rounded-full" style={{ background: '#06b6d4', boxShadow: '0 0 5px #06b6d4' }} />
-                        <div className="w-2 h-2 rounded-full" style={{ background: '#22c55e', boxShadow: '0 0 5px #22c55e' }} />
-                        <span className="text-xs ml-1" style={{ color: '#52525b' }}>
+                        <div className="w-2 h-2 rounded-full" style={{ background: '#D946EF', boxShadow: '0 0 6px #D946EF' }} />
+                        <div className="w-2 h-2 rounded-full" style={{ background: '#2DD4BF', boxShadow: '0 0 6px #2DD4BF' }} />
+                        <div className="w-2 h-2 rounded-full" style={{ background: '#BEF264', boxShadow: '0 0 6px #BEF264' }} />
+                        <span className="text-xs ml-1" style={{ color: '#475569' }}>
                             /{title.toLowerCase().replace(/[\s/&]+/g, '-')}.sys
                         </span>
-                        <Terminal size={10} className="ml-auto" style={{ color: '#52525b' }} />
+                        <Terminal size={10} className="ml-auto" style={{ color: '#475569' }} />
                     </div>
 
-                    {/* Log lines — staggered in */}
+                    {/* Staggered log lines */}
                     {stateB.map((line, i) => {
                         const rest = line.replace(/^SYS\.\d+:\s*/, '');
                         return (
@@ -133,16 +137,16 @@ function GlitchView({ stateB, tags, title, image }) {
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: i * 0.09, duration: 0.25 }}
                                 className="flex gap-2 items-start">
-                                <span className="shrink-0 text-xs font-bold px-1.5 py-0.5 rounded" style={{
-                                    color: '#06b6d4',
-                                    background: 'rgba(6,182,212,0.15)',
-                                    border: '1px solid rgba(6,182,212,0.35)',
+                                <span className="shrink-0 text-xs font-bold px-1.5 py-0.5 rounded-sm" style={{
+                                    color: '#2DD4BF',
+                                    background: 'rgba(45,212,191,0.12)',
+                                    border: '1px solid rgba(45,212,191,0.3)',
                                 }}>
                                     SYS.{i + 1}
                                 </span>
                                 <span className="text-xs leading-relaxed" style={{
-                                    color: '#f0fdf4',
-                                    textShadow: '0 0 8px rgba(34,197,94,0.5)',
+                                    color: '#BEF264',
+                                    textShadow: '0 0 8px rgba(190,242,100,0.45)',
                                 }}>
                                     {rest}
                                 </span>
@@ -150,19 +154,21 @@ function GlitchView({ stateB, tags, title, image }) {
                         );
                     })}
 
-                    <span className="text-xs font-mono mt-0.5" style={{ color: '#22c55e', textShadow: '0 0 8px #22c55e' }}>
+                    <span className="text-xs font-mono mt-0.5" style={{ color: '#D946EF', textShadow: '0 0 8px #D946EF' }}>
                         <span className="cursor-blink">█</span>
                     </span>
                 </div>
             </div>
 
-            {/* Tech tags */}
+            {/* Neon Lemon tech tags */}
             <div className="flex flex-wrap gap-2 pt-1">
                 {tags.map((tag) => (
                     <span key={tag} className="px-2.5 py-0.5 text-xs font-mono font-medium"
                         style={{
-                            color: '#22c55e', background: 'rgba(34,197,94,0.08)',
-                            border: '1px solid rgba(34,197,94,0.3)', borderRadius: 0,
+                            color: '#BEF264',
+                            background: 'rgba(190,242,100,0.06)',
+                            border: '1px solid rgba(190,242,100,0.25)',
+                            borderRadius: 0,
                         }}>
                         {tag}
                     </span>
@@ -179,51 +185,47 @@ export default function ProjectCard({ title, stateA, stateB, tags, image, index 
     const [depth, setDepth] = useState(0);
     const stage = getStage(depth);
 
-    /* ── Motion value updated on every slider tick ── */
     const depthMV = useMotionValue(0);
 
-    /* ── Continuous color interpolation via useTransform ──
-       Input keyframes [0, 33, 45, 100] make the dark theme arrive faster —
-       fully dark by depth 45 (mid-Stage 2) with no hard snap.              */
+    /* ── Color interpolation — tighter [0,33,45,100] keyframes
+       Dark bg stays dark; only border and accent colors shift
+       as the card transitions from Minimal → Terminal.         */
     const bgColor = useTransform(
         depthMV,
         [0, 33, 45, 100],
-        ['#ffffff', '#f3fdf8', '#101012', '#09090b'],
+        ['#0D0D14', '#0D0D14', '#07070C', '#05050A'],
     );
     const borderColorMV = useTransform(
         depthMV,
         [0, 33, 45, 100],
-        ['#a8e6cf', '#a8e6cf', '#ff007f', '#ff007f'],
+        ['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.07)', '#D946EF', '#D946EF'],
     );
     const titleColorMV = useTransform(
         depthMV,
         [0, 33, 45, 100],
-        ['#1e293b', '#475569', '#e4e4e7', '#f8fafc'],
+        ['#F8FAFC', '#F8FAFC', '#F8FAFC', '#F8FAFC'],
     );
 
-    /* ── Stage-driven maxWidth — 5–7% growth only, no overlap risk.
-       460px base → 490px at Stage 2 (+6.5%) → 495px at Stage 3 (+7.6%).   */
+    /* ── Stage-driven maxWidth — 5–7% subtle growth ── */
     const stageMaxWidth = stage === 1 ? 460 : stage === 2 ? 490 : 495;
 
-    /* ── Box shadow — discrete per stage, CSS transition handles animation ── */
+    /* ── Box shadow — violet glow on Stage 3 ── */
     const shadowByStage = stage === 1
-        ? '0 8px 32px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)'
+        ? '0 4px 24px rgba(0,0,0,0.4)'
         : stage === 2
-            ? '0 12px 40px rgba(168,230,207,0.20)'
-            : '4px 4px 0px rgba(255,0,127,1), 0 0 24px rgba(255,0,127,0.12)';
+            ? '0 8px 32px rgba(45,212,191,0.08)'
+            : '0 0 0 1px #D946EF, 0 0 24px rgba(217,70,239,0.2), 4px 4px 0 #D946EF';
 
     const handleSlider = (e) => {
         const val = Number(e.target.value);
         setDepth(val);
-        depthMV.set(val); // keeps motion value in sync for useTransform
+        depthMV.set(val);
     };
 
     const stageLabel = stage === 1 ? 'SURFACE' : stage === 2 ? 'MID-LAYER' : 'CORE';
-    const stageLabelColor = stage === 1 ? '#a8e6cf' : stage === 2 ? '#22c55e' : '#ff007f';
+    const stageLabelColor = stage === 1 ? '#2DD4BF' : stage === 2 ? '#2DD4BF' : '#D946EF';
 
     return (
-        /* layout prop: framer-motion measures, FLIP-animates position changes.
-           When maxWidth shifts, siblings are nudged smoothly via spring physics. */
         <motion.div
             layout
             initial={{ opacity: 0, y: 30 }}
@@ -235,20 +237,17 @@ export default function ProjectCard({ title, stateA, stateB, tags, image, index 
                 layout: { type: 'spring', stiffness: 280, damping: 28 },
             }}
             style={{
-                /* dimensions – state driven so layout FLIP actually fires */
                 width: '100%',
                 maxWidth: stageMaxWidth,
                 minWidth: 300,
-                /* colors – motion-value driven, interpolated every slider tick */
                 background: bgColor,
                 borderColor: borderColorMV,
-                /* non-interpolated styles */
-                borderWidth: 1,
+                borderWidth: stage === 3 ? 2 : 1,
                 borderStyle: 'solid',
-                borderRadius: 12,
+                borderRadius: stage === 3 ? 4 : 12,
                 overflow: 'hidden',
                 boxShadow: shadowByStage,
-                transition: 'box-shadow 0.5s ease',
+                transition: 'box-shadow 0.5s ease, border-radius 0.4s ease, border-width 0.3s ease',
             }}
         >
             <div className="relative p-6 flex flex-col gap-5">
@@ -257,15 +256,15 @@ export default function ProjectCard({ title, stateA, stateB, tags, image, index 
                 <div className="flex items-start justify-between gap-4">
                     <div className="flex items-center gap-3">
                         {stage === 3
-                            ? <Cpu size={20} style={{ color: '#ff007f' }} />
-                            : <GitBranch size={20} style={{ color: stage === 2 ? '#22c55e' : '#a8e6cf' }} />
+                            ? <Cpu size={20} style={{ color: '#D946EF' }} />
+                            : <GitBranch size={20} style={{ color: '#2DD4BF' }} />
                         }
                         <motion.h3
                             className="font-bold text-lg leading-tight"
                             style={{
                                 color: titleColorMV,
                                 fontFamily: stage === 3 ? 'var(--font-mono)' : 'var(--font-sans)',
-                                letterSpacing: stage === 3 ? '0.05em' : 'normal',
+                                letterSpacing: stage === 3 ? '0.04em' : 'normal',
                             }}
                         >
                             {stage === 3 ? `> ${title.toUpperCase()}` : title}
@@ -273,8 +272,14 @@ export default function ProjectCard({ title, stateA, stateB, tags, image, index 
                     </div>
                     <ExternalLink
                         size={16}
-                        className="shrink-0 mt-0.5 opacity-40 hover:opacity-100 transition-opacity cursor-pointer"
-                        style={{ color: stage === 3 ? '#06b6d4' : '#1e293b' }}
+                        className="shrink-0 mt-0.5 cursor-pointer"
+                        style={{
+                            color: stage === 3 ? '#D946EF' : 'rgba(248,250,252,0.3)',
+                            opacity: 0.7,
+                            transition: 'opacity 0.2s, color 0.2s',
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.opacity = 1; }}
+                        onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; }}
                     />
                 </div>
 
@@ -306,9 +311,8 @@ export default function ProjectCard({ title, stateA, stateB, tags, image, index 
                         <motion.label
                             className="text-xs font-semibold uppercase tracking-widest"
                             style={{
-                                color: titleColorMV,
+                                color: stage === 3 ? '#D946EF' : 'rgba(248,250,252,0.4)',
                                 fontFamily: stage === 3 ? 'var(--font-mono)' : 'var(--font-sans)',
-                                opacity: 0.6,
                             }}
                         >
                             {stage === 3 ? '// depth_level' : 'Depth'}
@@ -331,15 +335,15 @@ export default function ProjectCard({ title, stateA, stateB, tags, image, index 
 
                     {/* Threshold markers */}
                     <div className="relative flex justify-between text-xs"
-                        style={{ color: stage === 3 ? '#3f3f46' : '#cbd5e1' }}>
+                        style={{ color: 'rgba(248,250,252,0.2)' }}>
                         <span>0</span>
                         <div className="absolute left-[33%] flex flex-col items-center -translate-x-1/2 gap-0.5">
-                            <div className="w-px h-2" style={{ background: stage >= 2 ? '#22c55e' : '#e2e8f0' }} />
-                            <span style={{ color: stage >= 2 ? '#22c55e' : '#cbd5e1' }}>34</span>
+                            <div className="w-px h-2" style={{ background: stage >= 2 ? '#2DD4BF' : 'rgba(255,255,255,0.1)' }} />
+                            <span style={{ color: stage >= 2 ? '#2DD4BF' : 'rgba(255,255,255,0.2)' }}>34</span>
                         </div>
                         <div className="absolute left-[66%] flex flex-col items-center -translate-x-1/2 gap-0.5">
-                            <div className="w-px h-2" style={{ background: stage >= 3 ? '#ff007f' : '#e2e8f0' }} />
-                            <span style={{ color: stage >= 3 ? '#ff007f' : '#cbd5e1' }}>67</span>
+                            <div className="w-px h-2" style={{ background: stage >= 3 ? '#D946EF' : 'rgba(255,255,255,0.1)' }} />
+                            <span style={{ color: stage >= 3 ? '#D946EF' : 'rgba(255,255,255,0.2)' }}>67</span>
                         </div>
                         <span>100</span>
                     </div>

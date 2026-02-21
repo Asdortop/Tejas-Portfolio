@@ -38,11 +38,12 @@ export default function Home() {
                         <span style={{
                             display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
                             padding: '0.35rem 0.9rem', borderRadius: '9999px',
-                            background: '#dcfce7', border: '1px solid #a8e6cf',
-                            fontSize: '0.78rem', fontWeight: 600, color: '#065f46',
+                            background: 'rgba(45,212,191,0.08)',
+                            border: '1px solid rgba(45,212,191,0.25)',
+                            fontSize: '0.78rem', fontWeight: 600, color: '#2DD4BF',
                             fontFamily: 'var(--font-sans)',
                         }}>
-                            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
+                            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#2DD4BF', boxShadow: '0 0 8px #2DD4BF', display: 'inline-block' }} />
                             Open to opportunities
                         </span>
                     </motion.div>
@@ -52,7 +53,7 @@ export default function Home() {
                         style={{
                             fontSize: 'clamp(2.4rem, 6vw, 4rem)',
                             fontWeight: 900,
-                            color: '#0f172a',
+                            color: '#F8FAFC',
                             margin: '0 0 1.25rem',
                             lineHeight: 1.1,
                             letterSpacing: '-0.03em',
@@ -60,7 +61,7 @@ export default function Home() {
                         }}>
                         Tejas Guduru.{' '}
                         <span style={{
-                            background: 'linear-gradient(135deg, #a8e6cf, #22c55e)',
+                            background: 'linear-gradient(135deg, #D946EF, #2DD4BF)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                         }}>
@@ -71,7 +72,7 @@ export default function Home() {
                     {/* Subheading */}
                     <motion.p variants={itemVariants}
                         style={{
-                            fontSize: '1.05rem', color: '#64748b', marginBottom: '2.5rem',
+                            fontSize: '1rem', color: '#94A3B8', marginBottom: '2.5rem',
                             lineHeight: 1.7, fontFamily: 'var(--font-sans)',
                         }}>
                         B.Tech in Computer Science — AI &amp; Machine Learning<br />
@@ -85,13 +86,21 @@ export default function Home() {
                             style={{
                                 display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
                                 padding: '0.75rem 1.75rem', borderRadius: '9999px',
-                                background: '#0f172a', color: '#ffffff',
+                                background: 'linear-gradient(135deg, #D946EF, #a21caf)',
+                                color: '#ffffff',
                                 fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none',
                                 fontFamily: 'var(--font-sans)',
+                                boxShadow: '0 0 20px rgba(217,70,239,0.35)',
                                 transition: 'transform 0.2s, box-shadow 0.2s',
                             }}
-                            onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-                            onMouseLeave={e => e.currentTarget.style.transform = ''}
+                            onMouseEnter={e => {
+                                e.currentTarget.style.transform = 'translateY(-2px)';
+                                e.currentTarget.style.boxShadow = '0 0 32px rgba(217,70,239,0.55)';
+                            }}
+                            onMouseLeave={e => {
+                                e.currentTarget.style.transform = '';
+                                e.currentTarget.style.boxShadow = '0 0 20px rgba(217,70,239,0.35)';
+                            }}
                         >
                             View Projects <ArrowRight size={16} />
                         </Link>
@@ -99,19 +108,20 @@ export default function Home() {
                             style={{
                                 display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
                                 padding: '0.75rem 1.75rem', borderRadius: '9999px',
-                                background: '#ffffff', color: '#0f172a',
-                                border: '1px solid #e2e8f0',
+                                background: 'rgba(255,255,255,0.04)',
+                                color: '#F8FAFC',
+                                border: '1px solid rgba(255,255,255,0.1)',
                                 fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none',
                                 fontFamily: 'var(--font-sans)',
                                 transition: 'transform 0.2s, border-color 0.2s',
                             }}
                             onMouseEnter={e => {
                                 e.currentTarget.style.transform = 'translateY(-2px)';
-                                e.currentTarget.style.borderColor = '#a8e6cf';
+                                e.currentTarget.style.borderColor = 'rgba(45,212,191,0.4)';
                             }}
                             onMouseLeave={e => {
                                 e.currentTarget.style.transform = '';
-                                e.currentTarget.style.borderColor = '#e2e8f0';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
                             }}
                         >
                             <Mail size={16} /> Get in touch
@@ -130,19 +140,22 @@ export default function Home() {
                                 style={{
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     width: 40, height: 40, borderRadius: '50%',
-                                    background: '#f8fafc', border: '1px solid #e2e8f0',
-                                    color: '#64748b', textDecoration: 'none',
-                                    transition: 'color 0.2s, border-color 0.2s, transform 0.2s',
+                                    background: 'rgba(255,255,255,0.04)',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    color: '#94A3B8', textDecoration: 'none',
+                                    transition: 'color 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s',
                                 }}
                                 onMouseEnter={e => {
-                                    e.currentTarget.style.color = '#065f46';
-                                    e.currentTarget.style.borderColor = '#a8e6cf';
+                                    e.currentTarget.style.color = '#2DD4BF';
+                                    e.currentTarget.style.borderColor = 'rgba(45,212,191,0.4)';
                                     e.currentTarget.style.transform = 'translateY(-2px)';
+                                    e.currentTarget.style.boxShadow = '0 0 12px rgba(45,212,191,0.25)';
                                 }}
                                 onMouseLeave={e => {
-                                    e.currentTarget.style.color = '#64748b';
-                                    e.currentTarget.style.borderColor = '#e2e8f0';
+                                    e.currentTarget.style.color = '#94A3B8';
+                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
                                     e.currentTarget.style.transform = '';
+                                    e.currentTarget.style.boxShadow = '';
                                 }}
                             >
                                 <Icon size={18} />

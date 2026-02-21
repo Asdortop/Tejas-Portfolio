@@ -1,27 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── State A: Serene / Ghibli / Watercolor ── */
+  /* ── Void & Plasma Palette ─────────────────────── */
+
+  /* Backgrounds */
+  --color-void-bg: #05050A;
+  --color-void-card: #0D0D14;
+  --color-void-surface: #12121C;
+  --color-void-raised: #1A1A28;
+
+  /* Text */
+  --color-void-text: #F8FAFC;
+  --color-void-muted: #94A3B8;
+  --color-void-subtle: #475569;
+
+  /* Accents */
+  --color-plasma-primary: #D946EF;
+  /* Electric Fuchsia  */
+  --color-plasma-secondary: #2DD4BF;
+  /* Cyber Teal        */
+  --color-plasma-terminal: #BEF264;
+  /* Neon Lemon/Green  */
+
+  /* Legacy serene tokens kept for ProjectCard Stage 1 serene references */
   --color-serene-bg: #fcfdfc;
   --color-serene-card: #ffffff;
   --color-serene-text: #1e293b;
   --color-serene-accent1: #a8e6cf;
   --color-serene-accent2: #dcedc1;
 
-  /* ── State B: Hardcore / Spider-Verse / Terminal ── */
-  --color-glitch-bg: #09090b;
-  --color-glitch-card: #18181b;
-  --color-glitch-text: #f8fafc;
-  --color-glitch-accent1: #ff007f;
-  --color-glitch-accent2: #06b6d4;
-  --color-glitch-accent3: #22c55e;
-
   /* Fonts */
   --font-sans: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-mono: 'Space Mono', 'JetBrains Mono', 'Fira Code', monospace;
 }
 
-*, *::before, *::after {
+/* ── Global resets ──────────────────────────────── */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -31,107 +47,132 @@ html {
 
 body {
   margin: 0;
+  background: #05050A;
+  color: #F8FAFC;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar for glitch mode */
-.glitch-scroll::-webkit-scrollbar {
-  width: 4px;
-}
-.glitch-scroll::-webkit-scrollbar-track {
-  background: #09090b;
-}
-.glitch-scroll::-webkit-scrollbar-thumb {
-  background: #ff007f;
-  border-radius: 2px;
+/* ── Custom scrollbar ───────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
 }
 
-/* Range slider ─ State A */
+::-webkit-scrollbar-track {
+  background: #05050A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D946EF;
+  border-radius: 3px;
+}
+
+/* ── Stage 1 slider — Cyber Teal ────────────────── */
 .slider-serene {
   -webkit-appearance: none;
   appearance: none;
-  height: 4px;
+  height: 3px;
   border-radius: 9999px;
-  background: linear-gradient(to right, #a8e6cf 0%, #dcedc1 100%);
+  background: linear-gradient(to right, #2DD4BF 0%, #0d9488 100%);
   outline: none;
   cursor: pointer;
   width: 100%;
-}
-.slider-serene::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #a8e6cf;
-  border: 3px solid #1e293b;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-.slider-serene::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
 }
 
-/* Range slider ─ State B */
-.slider-glitch {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 4px;
-  border-radius: 0;
-  background: linear-gradient(to right, #ff007f 0%, #06b6d4 100%);
-  outline: none;
-  cursor: crosshair;
-  width: 100%;
-}
-.slider-glitch::-webkit-slider-thumb {
+.slider-serene::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 16px;
   height: 16px;
-  border-radius: 0;
-  background: #ff007f;
-  border: 2px solid #06b6d4;
-  cursor: crosshair;
-  transition: transform 0.1s ease, background 0.1s ease;
-  box-shadow: 0 0 8px #ff007f;
-}
-.slider-glitch::-webkit-slider-thumb:hover {
-  background: #06b6d4;
-  box-shadow: 0 0 12px #06b6d4;
+  border-radius: 50%;
+  background: #2DD4BF;
+  border: 2px solid #05050A;
+  box-shadow: 0 0 8px rgba(45, 212, 191, 0.6);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* Scanlines overlay for glitch cards */
+.slider-serene::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 14px rgba(45, 212, 191, 0.9);
+}
+
+/* ── Stage 3 slider — Electric Fuchsia ──────────── */
+.slider-glitch {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  border-radius: 0;
+  background: linear-gradient(to right, #D946EF 0%, #a21caf 100%);
+  outline: none;
+  cursor: crosshair;
+  width: 100%;
+}
+
+.slider-glitch::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 0;
+  background: #D946EF;
+  border: 2px solid #BEF264;
+  box-shadow: 0 0 10px rgba(217, 70, 239, 0.7);
+  cursor: crosshair;
+  transition: transform 0.1s ease, background 0.1s ease;
+}
+
+.slider-glitch::-webkit-slider-thumb:hover {
+  background: #BEF264;
+  box-shadow: 0 0 14px rgba(190, 242, 100, 0.8);
+}
+
+/* ── Scanlines overlay ───────────────────────────── */
 .scanlines::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.15) 2px,
-    rgba(0, 0, 0, 0.15) 4px
-  );
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.18) 2px,
+      rgba(0, 0, 0, 0.18) 4px);
   pointer-events: none;
   z-index: 10;
   border-radius: inherit;
 }
 
-/* Cursor blink for terminal */
+/* ── Terminal cursor blink ───────────────────────── */
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
+
 .cursor-blink {
   animation: blink 1s step-end infinite;
 }
 
-/* Subtle noise texture for serene cards */
+/* ── Subtle float animation ──────────────────────── */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
 }
+
 .float-anim {
   animation: float 4s ease-in-out infinite;
 }

@@ -8,20 +8,9 @@ import Projects from './pages/Projects';
 import Skills from './pages/Skills';
 import Experience from './pages/Experience';
 
-/* ─────────────────────────────────────────────
-   AnimatedRoutes must live inside BrowserRouter
-   so useLocation() is available for the key prop.
-───────────────────────────────────────────── */
 function AnimatedRoutes() {
   const location = useLocation();
-
   return (
-    /*
-      mode="wait" — the exit animation of the leaving page completes
-      before the entering page starts. Produces a cinematic crossfade.
-      The key is location.pathname so switching routes triggers the
-      enter/exit cycle.
-    */
     <AnimatePresence mode="wait" initial={false}>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
@@ -33,14 +22,11 @@ function AnimatedRoutes() {
   );
 }
 
-/* ─────────────────────────────────────────────
-   Root App
-───────────────────────────────────────────── */
 export default function App() {
   return (
     <BrowserRouter>
-      {/* Page background — always full-height serene off-white */}
-      <div style={{ minHeight: '100vh', background: '#fcfdfc' }}>
+      {/* background set globally on body via index.css */}
+      <div style={{ minHeight: '100vh' }}>
         <Navbar />
         <AnimatedRoutes />
       </div>

@@ -4,20 +4,20 @@ import { PageShell } from '../components/PageShell';
 const SKILL_GROUPS = [
     {
         category: 'AI / ML',
-        color: '#a8e6cf',
-        glow: 'rgba(168,230,207,0.5)',
+        color: '#2DD4BF',
+        glow: 'rgba(45,212,191,0.45)',
         skills: ['Python', 'NLP', 'Computer Vision', 'Gemini API', 'Hugging Face', 'FAISS', 'Pinecone'],
     },
     {
         category: 'Backend / Infra',
-        color: '#06b6d4',
-        glow: 'rgba(6,182,212,0.5)',
+        color: '#D946EF',
+        glow: 'rgba(217,70,239,0.45)',
         skills: ['C++', 'FastAPI', 'PostgreSQL', 'Docker', 'AWS', 'Kafka'],
     },
     {
         category: 'Frontend',
-        color: '#dcedc1',
-        glow: 'rgba(220,237,193,0.8)',
+        color: '#BEF264',
+        glow: 'rgba(190,242,100,0.45)',
         skills: ['React.js', 'Tailwind CSS', 'Framer Motion'],
     },
 ];
@@ -43,7 +43,7 @@ export default function Skills() {
                         transition={{ duration: 0.4 }}
                         style={{
                             fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-                            fontWeight: 800, color: '#0f172a',
+                            fontWeight: 800, color: '#F8FAFC',
                             margin: '0 0 2.5rem', letterSpacing: '-0.02em',
                             fontFamily: 'var(--font-sans)',
                         }}
@@ -55,12 +55,13 @@ export default function Skills() {
                         {SKILL_GROUPS.map(({ category, color, glow, skills }) => (
                             <div key={category}>
                                 <h2 style={{
-                                    fontSize: '0.75rem', fontWeight: 700,
-                                    textTransform: 'uppercase', letterSpacing: '0.1em',
-                                    color: '#94a3b8', marginBottom: '1rem', marginTop: 0,
-                                    fontFamily: 'var(--font-sans)',
+                                    fontSize: '0.7rem', fontWeight: 700,
+                                    textTransform: 'uppercase', letterSpacing: '0.12em',
+                                    color: color, marginBottom: '1rem', marginTop: 0,
+                                    fontFamily: 'var(--font-mono)',
+                                    opacity: 0.75,
                                 }}>
-                                    {category}
+                  // {category}
                                 </h2>
 
                                 <motion.div
@@ -68,29 +69,29 @@ export default function Skills() {
                                     initial="hidden"
                                     whileInView="show"
                                     viewport={{ once: true, margin: '-40px' }}
-                                    style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}
+                                    style={{ display: 'flex', flexWrap: 'wrap', gap: '0.65rem' }}
                                 >
                                     {skills.map((skill) => (
                                         <motion.div
                                             key={skill}
                                             variants={nodeVariants}
                                             whileHover={{
-                                                scale: 1.1,
-                                                boxShadow: `0 0 16px ${glow}`,
-                                                transition: { duration: 0.15 },
+                                                scale: 1.08,
+                                                boxShadow: `0 0 18px ${glow}`,
+                                                borderColor: color,
+                                                transition: { duration: 0.12 },
                                             }}
                                             style={{
-                                                padding: '0.5rem 1.1rem',
+                                                padding: '0.45rem 1rem',
                                                 borderRadius: '9999px',
-                                                background: '#ffffff',
-                                                border: `1px solid ${color}`,
-                                                fontSize: '0.85rem',
+                                                background: 'rgba(255,255,255,0.03)',
+                                                border: `1px solid rgba(255,255,255,0.08)`,
+                                                fontSize: '0.84rem',
                                                 fontWeight: 500,
-                                                color: '#1e293b',
+                                                color: '#F8FAFC',
                                                 cursor: 'default',
-                                                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                                                 fontFamily: 'var(--font-sans)',
-                                                transition: 'box-shadow 0.2s',
+                                                transition: 'box-shadow 0.2s, border-color 0.2s',
                                             }}
                                         >
                                             {skill}

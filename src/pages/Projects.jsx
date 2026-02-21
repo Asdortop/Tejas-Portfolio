@@ -56,15 +56,15 @@ export default function Projects() {
                         <h1 style={{
                             fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
                             fontWeight: 800,
-                            color: '#0f172a',
+                            color: '#F8FAFC',
                             margin: '0 0 0.5rem',
                             letterSpacing: '-0.02em',
                             fontFamily: 'var(--font-sans)',
                         }}>
                             Projects
                         </h1>
-                        <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: 0 }}>
-                            Drag each card&apos;s <strong style={{ color: '#64748b' }}>Depth</strong> slider —
+                        <p style={{ color: '#475569', fontSize: '0.9rem', margin: 0 }}>
+                            Drag each card&apos;s <strong style={{ color: '#94A3B8' }}>Depth</strong> slider —
                             Stage&nbsp;1 shows the summary, Stage&nbsp;2 reveals the project mockup,
                             Stage&nbsp;3 unlocks raw implementation metrics.
                         </p>

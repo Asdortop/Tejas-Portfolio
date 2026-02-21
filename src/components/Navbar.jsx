@@ -12,10 +12,9 @@ const LINKS = [
 
 export default function Navbar() {
     const location = useLocation();
-    // Track which link the mouse is hovering — null means "show active route highlight"
     const [hoveredPath, setHoveredPath] = useState(null);
 
-    // The active highlight follows hovered link first, then falls back to current route
+    // Hover takes priority over active route for the highlight pill
     const highlightedPath = hoveredPath ?? location.pathname;
 
     return (
@@ -29,29 +28,29 @@ export default function Navbar() {
                 zIndex: 50,
             }}
         >
-            {/* Glassmorphism pill */}
+            {/* Dark frosted glass pill */}
             <div
                 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.25rem',
-                    padding: '0.35rem',
+                    gap: '0.2rem',
+                    padding: '0.3rem',
                     borderRadius: '9999px',
-                    backdropFilter: 'blur(16px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-                    background: 'rgba(255, 255, 255, 0.72)',
-                    border: '1px solid rgba(168, 230, 207, 0.45)',
-                    boxShadow: '0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)',
+                    backdropFilter: 'blur(20px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.09)',
+                    boxShadow: '0 4px 32px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset',
                     whiteSpace: 'nowrap',
                 }}
                 onMouseLeave={() => setHoveredPath(null)}
             >
                 {LINKS.map(({ to, label, icon: Icon }) => {
-                    const isExact = to === '/'
+                    const isActive = to === '/'
                         ? location.pathname === '/'
                         : location.pathname.startsWith(to);
                     const isHighlighted = to === '/'
-                        ? hoveredPath === '/' || (hoveredPath === null && isExact)
+                        ? highlightedPath === '/'
                         : (highlightedPath ?? '').startsWith(to);
 
                     return (
@@ -64,19 +63,19 @@ export default function Navbar() {
                                 position: 'relative',
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '0.375rem',
-                                padding: '0.45rem 1rem',
+                                gap: '0.35rem',
+                                padding: '0.5rem 1.05rem',
                                 borderRadius: '9999px',
                                 fontSize: '0.8125rem',
-                                fontWeight: 500,
+                                fontWeight: isActive ? 600 : 400,
                                 fontFamily: 'var(--font-sans)',
                                 textDecoration: 'none',
-                                color: isHighlighted ? '#064e3b' : '#64748b',
+                                color: isHighlighted ? '#2DD4BF' : 'rgba(248,250,252,0.55)',
                                 transition: 'color 0.2s ease',
                                 zIndex: 1,
                             }}
                         >
-                            {/* Sliding background highlight — single layoutId shared across all */}
+                            {/* Sliding teal highlight pill — single layoutId shared */}
                             <AnimatePresence>
                                 {isHighlighted && (
                                     <motion.span
@@ -85,18 +84,23 @@ export default function Navbar() {
                                             position: 'absolute',
                                             inset: 0,
                                             borderRadius: '9999px',
-                                            background: 'linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%)',
+                                            background: 'rgba(45, 212, 191, 0.12)',
+                                            border: '1px solid rgba(45, 212, 191, 0.22)',
                                             zIndex: -1,
                                         }}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
-                                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                                        transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                                     />
                                 )}
                             </AnimatePresence>
 
-                            <Icon size={14} strokeWidth={isHighlighted ? 2.5 : 1.75} />
+                            <Icon
+                                size={14}
+                                strokeWidth={isActive ? 2.5 : 1.75}
+                                style={{ color: isHighlighted ? '#2DD4BF' : 'rgba(248,250,252,0.4)' }}
+                            />
                             <span>{label}</span>
                         </NavLink>
                     );
