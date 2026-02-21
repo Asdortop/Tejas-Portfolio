@@ -1,37 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Void & Plasma Palette ─────────────────────── */
+  /* ── Cyberpunk Terminal Palette ──────────────── */
 
   /* Backgrounds */
-  --color-void-bg: #05050A;
-  --color-void-card: #0D0D14;
-  --color-void-surface: #12121C;
-  --color-void-raised: #1A1A28;
+  --color-void: #000000;
+  --color-void-card: #0A0A0A;
+  --color-void-surface: #111111;
+  --color-void-raised: #1A1A1A;
 
   /* Text */
-  --color-void-text: #F8FAFC;
+  --color-void-text: #FFFFFF;
   --color-void-muted: #94A3B8;
   --color-void-subtle: #475569;
 
-  /* Accents */
-  --color-plasma-primary: #D946EF;
-  /* Electric Fuchsia  */
-  --color-plasma-secondary: #2DD4BF;
-  /* Cyber Teal        */
-  --color-plasma-terminal: #BEF264;
-  /* Neon Lemon/Green  */
+  /* Core accents */
+  --color-hot-pink: #FF007F;
+  --color-cyber-cyan: #00FFFF;
+  --color-terminal-green: #22C55E;
+  --color-neon-lemon: #BEF264;
 
-  /* Legacy serene tokens kept for ProjectCard Stage 1 serene references */
-  --color-serene-bg: #fcfdfc;
-  --color-serene-card: #ffffff;
-  --color-serene-text: #1e293b;
-  --color-serene-accent1: #a8e6cf;
-  --color-serene-accent2: #dcedc1;
+  /* Dim variants */
+  --color-hot-pink-dim: rgba(255, 0, 127, 0.15);
+  --color-cyber-cyan-dim: rgba(0, 255, 255, 0.12);
 
   /* Fonts */
   --font-sans: 'Inter', system-ui, sans-serif;
-  --font-mono: 'Space Mono', 'JetBrains Mono', 'Fira Code', monospace;
+  --font-mono: 'JetBrains Mono', 'Space Mono', 'Fira Code', monospace;
 }
 
 /* ── Global resets ──────────────────────────────── */
@@ -47,8 +42,8 @@ html {
 
 body {
   margin: 0;
-  background: #05050A;
-  color: #F8FAFC;
+  background: #000000;
+  color: #FFFFFF;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -56,25 +51,25 @@ body {
 
 /* ── Custom scrollbar ───────────────────────────── */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #05050A;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D946EF;
-  border-radius: 3px;
+  background: #FF007F;
+  border-radius: 2px;
 }
 
-/* ── Stage 1 slider — Cyber Teal ────────────────── */
+/* ── Stage 1 slider — Cyber Cyan ────────────────── */
 .slider-serene {
   -webkit-appearance: none;
   appearance: none;
-  height: 3px;
+  height: 2px;
   border-radius: 9999px;
-  background: linear-gradient(to right, #2DD4BF 0%, #0d9488 100%);
+  background: linear-gradient(to right, #00FFFF 0%, #0891b2 100%);
   outline: none;
   cursor: pointer;
   width: 100%;
@@ -83,28 +78,28 @@ body {
 .slider-serene::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: #2DD4BF;
-  border: 2px solid #05050A;
-  box-shadow: 0 0 8px rgba(45, 212, 191, 0.6);
+  background: #00FFFF;
+  border: 2px solid #000000;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
 .slider-serene::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 14px rgba(45, 212, 191, 0.9);
+  transform: scale(1.25);
+  box-shadow: 0 0 16px rgba(0, 255, 255, 1);
 }
 
-/* ── Stage 3 slider — Electric Fuchsia ──────────── */
+/* ── Stage 3 slider — Hot Pink ──────────────────── */
 .slider-glitch {
   -webkit-appearance: none;
   appearance: none;
-  height: 3px;
+  height: 2px;
   border-radius: 0;
-  background: linear-gradient(to right, #D946EF 0%, #a21caf 100%);
+  background: linear-gradient(to right, #FF007F 0%, #9d0059 100%);
   outline: none;
   cursor: crosshair;
   width: 100%;
@@ -113,34 +108,19 @@ body {
 .slider-glitch::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 0;
-  background: #D946EF;
-  border: 2px solid #BEF264;
-  box-shadow: 0 0 10px rgba(217, 70, 239, 0.7);
+  background: #FF007F;
+  border: 2px solid #00FFFF;
+  box-shadow: 0 0 10px rgba(255, 0, 127, 0.8);
   cursor: crosshair;
-  transition: transform 0.1s ease, background 0.1s ease;
+  transition: transform 0.1s, background 0.1s;
 }
 
 .slider-glitch::-webkit-slider-thumb:hover {
-  background: #BEF264;
-  box-shadow: 0 0 14px rgba(190, 242, 100, 0.8);
-}
-
-/* ── Scanlines overlay ───────────────────────────── */
-.scanlines::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.18) 2px,
-      rgba(0, 0, 0, 0.18) 4px);
-  pointer-events: none;
-  z-index: 10;
-  border-radius: inherit;
+  background: #00FFFF;
+  box-shadow: 0 0 14px rgba(0, 255, 255, 1);
 }
 
 /* ── Terminal cursor blink ───────────────────────── */
@@ -160,7 +140,95 @@ body {
   animation: blink 1s step-end infinite;
 }
 
-/* ── Subtle float animation ──────────────────────── */
+/* ── CRT scanlines ───────────────────────────────── */
+.scanlines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.22) 2px,
+      rgba(0, 0, 0, 0.22) 4px);
+  pointer-events: none;
+  z-index: 10;
+  border-radius: inherit;
+}
+
+/* ── Halftone glitch layers ──────────────────────── */
+@keyframes glitch-cyan {
+
+  0%,
+  100% {
+    clip-path: inset(0 0 90% 0);
+    transform: translate(-3px, 2px);
+  }
+
+  25% {
+    clip-path: inset(30% 0 50% 0);
+    transform: translate(3px, -2px);
+  }
+
+  50% {
+    clip-path: inset(60% 0 20% 0);
+    transform: translate(-2px, 1px);
+  }
+
+  75% {
+    clip-path: inset(10% 0 80% 0);
+    transform: translate(2px, -1px);
+  }
+}
+
+@keyframes glitch-pink {
+
+  0%,
+  100% {
+    clip-path: inset(80% 0 0 0);
+    transform: translate(3px, -2px);
+  }
+
+  25% {
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(-3px, 2px);
+  }
+
+  50% {
+    clip-path: inset(50% 0 30% 0);
+    transform: translate(2px, -1px);
+  }
+
+  75% {
+    clip-path: inset(85% 0 5% 0);
+    transform: translate(-2px, 1px);
+  }
+}
+
+.glitch-text:hover .glitch-layer-cyan {
+  animation: glitch-cyan 0.35s steps(1) infinite;
+}
+
+.glitch-text:hover .glitch-layer-pink {
+  animation: glitch-pink 0.35s steps(1) infinite;
+}
+
+/* ── Halftone dot overlay (hover) ────────────────── */
+.halftone-overlay {
+  position: absolute;
+  inset: -8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background-image: radial-gradient(circle, rgba(255, 0, 127, 0.35) 1px, transparent 1px);
+  background-size: 8px 8px;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.glitch-text:hover .halftone-overlay {
+  opacity: 1;
+}
+
+/* ── Float animation ─────────────────────────────── */
 @keyframes float {
 
   0%,

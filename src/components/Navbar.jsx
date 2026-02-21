@@ -14,7 +14,6 @@ export default function Navbar() {
     const location = useLocation();
     const [hoveredPath, setHoveredPath] = useState(null);
 
-    // Hover takes priority over active route for the highlight pill
     const highlightedPath = hoveredPath ?? location.pathname;
 
     return (
@@ -28,19 +27,19 @@ export default function Navbar() {
                 zIndex: 50,
             }}
         >
-            {/* Dark frosted glass pill */}
+            {/* Dark frosted pill — bg-black/50, border-pink/30 */}
             <div
                 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.2rem',
+                    gap: '0.15rem',
                     padding: '0.3rem',
                     borderRadius: '9999px',
-                    backdropFilter: 'blur(20px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                    background: 'rgba(255, 255, 255, 0.04)',
-                    border: '1px solid rgba(255, 255, 255, 0.09)',
-                    boxShadow: '0 4px 32px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset',
+                    backdropFilter: 'blur(16px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(16px) saturate(180%)',
+                    background: 'rgba(0,0,0,0.55)',
+                    border: '1px solid rgba(255,0,127,0.28)',
+                    boxShadow: '0 4px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,0,127,0.06) inset',
                     whiteSpace: 'nowrap',
                 }}
                 onMouseLeave={() => setHoveredPath(null)}
@@ -64,18 +63,18 @@ export default function Navbar() {
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '0.35rem',
-                                padding: '0.5rem 1.05rem',
+                                padding: '0.48rem 1rem',
                                 borderRadius: '9999px',
                                 fontSize: '0.8125rem',
                                 fontWeight: isActive ? 600 : 400,
                                 fontFamily: 'var(--font-sans)',
                                 textDecoration: 'none',
-                                color: isHighlighted ? '#2DD4BF' : 'rgba(248,250,252,0.55)',
-                                transition: 'color 0.2s ease',
+                                color: isHighlighted ? '#FF007F' : 'rgba(255,255,255,0.6)',
+                                transition: 'color 0.2s',
                                 zIndex: 1,
                             }}
                         >
-                            {/* Sliding teal highlight pill — single layoutId shared */}
+                            {/* Sliding hot-pink highlight pill */}
                             <AnimatePresence>
                                 {isHighlighted && (
                                     <motion.span
@@ -84,14 +83,14 @@ export default function Navbar() {
                                             position: 'absolute',
                                             inset: 0,
                                             borderRadius: '9999px',
-                                            background: 'rgba(45, 212, 191, 0.12)',
-                                            border: '1px solid rgba(45, 212, 191, 0.22)',
+                                            background: 'rgba(255,0,127,0.1)',
+                                            border: '1px solid rgba(255,0,127,0.3)',
                                             zIndex: -1,
                                         }}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
-                                        transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                                        transition={{ type: 'spring', stiffness: 420, damping: 30 }}
                                     />
                                 )}
                             </AnimatePresence>
@@ -99,7 +98,7 @@ export default function Navbar() {
                             <Icon
                                 size={14}
                                 strokeWidth={isActive ? 2.5 : 1.75}
-                                style={{ color: isHighlighted ? '#2DD4BF' : 'rgba(248,250,252,0.4)' }}
+                                style={{ color: isHighlighted ? '#FF007F' : 'rgba(255,255,255,0.35)' }}
                             />
                             <span>{label}</span>
                         </NavLink>
