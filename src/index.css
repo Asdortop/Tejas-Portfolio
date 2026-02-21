@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── State A: Serene / Ghibli / Watercolor ── */
+  --color-serene-bg: #fcfdfc;
+  --color-serene-card: #ffffff;
+  --color-serene-text: #1e293b;
+  --color-serene-accent1: #a8e6cf;
+  --color-serene-accent2: #dcedc1;
+
+  /* ── State B: Hardcore / Spider-Verse / Terminal ── */
+  --color-glitch-bg: #09090b;
+  --color-glitch-card: #18181b;
+  --color-glitch-text: #f8fafc;
+  --color-glitch-accent1: #ff007f;
+  --color-glitch-accent2: #06b6d4;
+  --color-glitch-accent3: #22c55e;
+
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar for glitch mode */
+.glitch-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.glitch-scroll::-webkit-scrollbar-track {
+  background: #09090b;
+}
+.glitch-scroll::-webkit-scrollbar-thumb {
+  background: #ff007f;
+  border-radius: 2px;
+}
+
+/* Range slider ─ State A */
+.slider-serene {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #a8e6cf 0%, #dcedc1 100%);
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+}
+.slider-serene::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #a8e6cf;
+  border: 3px solid #1e293b;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.slider-serene::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Range slider ─ State B */
+.slider-glitch {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 0;
+  background: linear-gradient(to right, #ff007f 0%, #06b6d4 100%);
+  outline: none;
+  cursor: crosshair;
+  width: 100%;
+}
+.slider-glitch::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+  background: #ff007f;
+  border: 2px solid #06b6d4;
+  cursor: crosshair;
+  transition: transform 0.1s ease, background 0.1s ease;
+  box-shadow: 0 0 8px #ff007f;
+}
+.slider-glitch::-webkit-slider-thumb:hover {
+  background: #06b6d4;
+  box-shadow: 0 0 12px #06b6d4;
+}
+
+/* Scanlines overlay for glitch cards */
+.scanlines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+  border-radius: inherit;
+}
+
+/* Cursor blink for terminal */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Subtle noise texture for serene cards */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+.float-anim {
+  animation: float 4s ease-in-out infinite;
+}
