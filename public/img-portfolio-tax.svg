@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" width="600" height="380">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0f9ff"/>
+      <stop offset="100%" stop-color="#e0f2fe"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="380" fill="url(#bg2)" rx="12"/>
+  <!-- Header bar -->
+  <rect x="0" y="0" width="600" height="48" fill="#0369a1" rx="12" opacity="0.9"/>
+  <text x="24" y="30" fill="white" font-family="sans-serif" font-size="14" font-weight="700">📊 Portfolio &amp; Tax Dashboard</text>
+  <text x="520" y="30" fill="#7dd3fc" font-family="sans-serif" font-size="11">FY 2024-25</text>
+  <!-- Portfolio value card -->
+  <rect x="16" y="64" width="170" height="80" rx="8" fill="#ffffff" opacity="0.95"/>
+  <text x="28" y="86" fill="#6b7280" font-family="sans-serif" font-size="10">Portfolio Value</text>
+  <text x="28" y="112" fill="#0369a1" font-family="sans-serif" font-size="22" font-weight="800">₹8,42,500</text>
+  <text x="28" y="132" fill="#22c55e" font-family="sans-serif" font-size="10">▲ +12.4% this month</text>
+  <!-- Tax liability card -->
+  <rect x="198" y="64" width="170" height="80" rx="8" fill="#ffffff" opacity="0.95"/>
+  <text x="210" y="86" fill="#6b7280" font-family="sans-serif" font-size="10">Tax Liability (Computed)</text>
+  <text x="210" y="112" fill="#dc2626" font-family="sans-serif" font-size="22" font-weight="800">₹1,23,480</text>
+  <text x="210" y="132" fill="#6b7280" font-family="sans-serif" font-size="10">Auto-calculated · 90% saved</text>
+  <!-- Trades card -->
+  <rect x="380" y="64" width="204" height="80" rx="8" fill="#ffffff" opacity="0.95"/>
+  <text x="392" y="86" fill="#6b7280" font-family="sans-serif" font-size="10">Trades Tracked</text>
+  <text x="392" y="112" fill="#0369a1" font-family="sans-serif" font-size="22" font-weight="800">1,284</text>
+  <text x="392" y="132" fill="#6b7280" font-family="sans-serif" font-size="10">FastAPI · PostgreSQL · Docker</text>
+  <!-- Chart area -->
+  <rect x="16" y="156" width="370" height="140" rx="8" fill="#ffffff" opacity="0.95"/>
+  <text x="28" y="178" fill="#374151" font-family="sans-serif" font-size="11" font-weight="600">Portfolio PnL (6M)</text>
+  <!-- Chart bars -->
+  <rect x="40" y="240" width="30" height="40" rx="3" fill="#22c55e" opacity="0.8"/>
+  <rect x="82" y="220" width="30" height="60" rx="3" fill="#22c55e" opacity="0.8"/>
+  <rect x="124" y="255" width="30" height="25" rx="3" fill="#ef4444" opacity="0.8"/>
+  <rect x="166" y="215" width="30" height="65" rx="3" fill="#22c55e" opacity="0.8"/>
+  <rect x="208" y="230" width="30" height="50" rx="3" fill="#22c55e" opacity="0.8"/>
+  <rect x="250" y="205" width="30" height="75" rx="3" fill="#22c55e" opacity="0.8"/>
+  <rect x="292" y="238" width="30" height="42" rx="3" fill="#ef4444" opacity="0.8"/>
+  <line x1="28" y1="285" x2="370" y2="285" stroke="#e5e7eb" stroke-width="1"/>
+  <!-- Pie chart -->
+  <rect x="398" y="156" width="186" height="140" rx="8" fill="#ffffff" opacity="0.95"/>
+  <text x="410" y="178" fill="#374151" font-family="sans-serif" font-size="11" font-weight="600">Asset Allocation</text>
+  <circle cx="464" cy="240" r="44" fill="none" stroke="#0369a1" stroke-width="20" stroke-dasharray="138 40" transform="rotate(-90 464 240)"/>
+  <circle cx="464" cy="240" r="44" fill="none" stroke="#22c55e" stroke-width="20" stroke-dasharray="55 123" transform="rotate(215 464 240)"/>
+  <circle cx="464" cy="240" r="44" fill="none" stroke="#f59e0b" stroke-width="20" stroke-dasharray="83 95" transform="rotate(315 464 240)"/>
+  <text x="546" y="210" fill="#0369a1" font-family="sans-serif" font-size="9">● Equity 49%</text>
+  <text x="546" y="226" fill="#22c55e" font-family="sans-serif" font-size="9">● MF 20%</text>
+  <text x="546" y="242" fill="#f59e0b" font-family="sans-serif" font-size="9">● Bonds 31%</text>
+  <!-- Trade table -->
+  <rect x="16" y="308" width="568" height="58" rx="8" fill="#ffffff" opacity="0.95"/>
+  <text x="28" y="328" fill="#374151" font-family="sans-serif" font-size="10" font-weight="600">Recent Trades</text>
+  <text x="28" y="348" fill="#22c55e" font-family="sans-serif" font-size="9">▲ RELIANCE  BUY  100@2,450  +₹4,200</text>
+  <text x="220" y="348" fill="#ef4444" font-family="sans-serif" font-size="9">▼ TCS  SELL  50@3,900  -₹1,100</text>
+  <text x="390" y="348" fill="#22c55e" font-family="sans-serif" font-size="9">▲ INFY  BUY  200@1,780  +₹8,600</text>
+  <text x="28" y="360" fill="#9ca3af" font-family="sans-serif" font-size="8">Automated via PostgreSQL · Docker · AWS · 90% workflow automated</text>
+</svg>

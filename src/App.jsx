@@ -7,6 +7,7 @@ import ProjectCard from './components/ProjectCard';
 const PROJECTS = [
   {
     title: 'AI-Powered Medical Chatbot',
+    image: '/img-chatbot.svg',
     stateA:
       'A context-aware multilingual AI healthcare chatbot designed for seamless patient interaction.',
     stateB: [
@@ -18,6 +19,7 @@ const PROJECTS = [
   },
   {
     title: 'Portfolio & Tax Computation System',
+    image: '/img-portfolio-tax.svg',
     stateA:
       'An automated system tracking trades and computing tax workflows for salaried individuals.',
     stateB: [
@@ -28,6 +30,7 @@ const PROJECTS = [
   },
   {
     title: 'AI-Powered Resume Analyzer',
+    image: '/img-resume-analyzer.svg',
     stateA:
       'An intelligent tool that reads and analyzes resumes to provide automated scoring and feedback.',
     stateB: [
