@@ -1,4 +1,5 @@
 import './index.css';
+import { motion } from 'framer-motion';
 import ProjectCard from './components/ProjectCard';
 
 /* ─────────────────────────────────────────────
@@ -88,7 +89,7 @@ export default function App() {
 
       {/* ── Projects ── */}
       <section id="projects" style={{ padding: '3rem 1.5rem' }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <h2
             style={{
               fontSize: '1.5rem',
@@ -100,23 +101,29 @@ export default function App() {
           >
             Projects
           </h2>
-          <p
-            style={{ color: '#94a3b8', marginBottom: '2rem', fontSize: '0.9rem' }}
-          >
-            Drag the <strong>Depth</strong> slider on each card past <strong>50</strong> to reveal the technical implementation details.
+          <p style={{ color: '#94a3b8', marginBottom: '2rem', fontSize: '0.9rem' }}>
+            Drag each card&apos;s <strong>Depth</strong> slider — Stage 1 shows the summary,
+            Stage 2 reveals the project mockup, Stage 3 unlocks the raw implementation metrics.
           </p>
 
-          <div
+          {/*
+            Flex-wrap container: cards have layout prop + dynamic maxWidth.
+            When a card expands, Framer Motion FLIP spring-animates siblings
+            out of the way — no CSS grid track constraints needed.
+          */}
+          <motion.div
+            layout
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 420px), 1fr))',
+              display: 'flex',
+              flexWrap: 'wrap',
               gap: '1.5rem',
+              alignItems: 'flex-start',
             }}
           >
             {PROJECTS.map((project, i) => (
               <ProjectCard key={project.title} index={i} {...project} />
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
