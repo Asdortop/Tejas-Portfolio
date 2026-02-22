@@ -1,10 +1,12 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { PageShell } from '../components/PageShell';
-import { Briefcase, Trophy, Server, Leaf, Award } from 'lucide-react';
+import { Briefcase, Trophy, Server, Leaf, Award, ChevronLeft, ChevronRight } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════
-   EXPERIENCE DATA
+   EXPERIENCE DATA  — each entry now carries an images[]
+   For the portfolio, we use labelled gradient placeholders
+   unless a real URL is provided (starts with / or http).
 ═══════════════════════════════════════════════════════════ */
 const EXPERIENCES = [
     {
@@ -13,15 +15,18 @@ const EXPERIENCES = [
         role: 'Backend Intern',
         date: 'Jul 2024 – Sep 2024',
         description:
-            'Designed and built a Portfolio Management backend from scratch. Containerized the full service stack with Docker and deployed to AWS — achieving production availability and on-demand horizontal scaling.',
+            'Designed and built a Portfolio Management backend from scratch. Containerised the full service stack with Docker and deployed to AWS for production availability and on-demand horizontal scaling.',
         bullets: [
             'Architected RESTful API with FastAPI + PostgreSQL',
             'Docker Compose orchestration for local & staging environments',
             'AWS EC2/S3 deployment pipeline with environment-based config',
         ],
         icon: Server,
-        imageBg: 'linear-gradient(135deg, rgba(255,0,127,0.08) 0%, rgba(0,0,0,0) 100%)',
-        imageLabel: 'ALFAGO_RESEARCH',
+        images: [
+            { label: 'BACKEND_ARCH', sub: 'System design overview' },
+            { label: 'DOCKER_STACK', sub: 'Container orchestration' },
+            { label: 'AWS_DEPLOY', sub: 'Cloud deployment pipeline' },
+        ],
     },
     {
         type: 'work',
@@ -36,8 +41,11 @@ const EXPERIENCES = [
             '15% precision gain over naive baseline (RMSE metric)',
         ],
         icon: Leaf,
-        imageBg: 'linear-gradient(135deg, rgba(255,0,127,0.08) 0%, rgba(0,0,0,0) 100%)',
-        imageLabel: 'INFOSYS_SPRINGBOARD',
+        images: [
+            { label: 'MODEL_PIPELINE', sub: 'ML training pipeline' },
+            { label: 'FEATURE_ENG', sub: 'Feature correlation map' },
+            { label: 'RESULT_METRICS', sub: 'Precision improvement' },
+        ],
     },
     {
         type: 'achievement',
@@ -45,15 +53,18 @@ const EXPERIENCES = [
         role: 'Global Finalist',
         date: '2024',
         description:
-            'Selected among the top 20% of global submissions in Google\'s flagship student developer challenge. Competed against thousands of university teams worldwide.',
+            "Selected among the top 20% of global submissions in Google's flagship student developer challenge. Competed against thousands of university teams worldwide.",
         bullets: [
-            'Top 20% globally — competitive pool of 10,000+ teams',
+            'Top 20% globally — competitive pool of 10 000+ teams',
             'Built a full-stack AI solution addressing a UN SDG',
             'Evaluated by Google engineers on impact and technical depth',
         ],
         icon: Award,
-        imageBg: 'linear-gradient(135deg, rgba(0,255,255,0.08) 0%, rgba(0,0,0,0) 100%)',
-        imageLabel: 'GOOGLE_SOLUTION_CHALLENGE',
+        images: [
+            { label: 'GSC_CERTIFICATE', sub: 'Official finalist certificate' },
+            { label: 'PROJECT_DEMO', sub: 'Solution demo screen' },
+            { label: 'TEAM_PHOTO', sub: 'Team at submission' },
+        ],
     },
     {
         type: 'achievement',
@@ -68,84 +79,209 @@ const EXPERIENCES = [
             'Peer cohort of top engineering students nationwide',
         ],
         icon: Trophy,
-        imageBg: 'linear-gradient(135deg, rgba(0,255,255,0.08) 0%, rgba(0,0,0,0) 100%)',
-        imageLabel: 'TURING_CUP_2025',
+        images: [
+            { label: 'FINALIST_BADGE', sub: 'Finalist recognition' },
+            { label: 'CHALLENGE_UI', sub: 'Competition interface' },
+        ],
     },
 ];
 
 /* ── per-type theme helpers ──────────────────────────────── */
-const theme = (type) => type === 'work'
-    ? { accent: '#FF007F', dim: 'rgba(255,0,127,0.08)', glow: 'rgba(255,0,127,0.35)', border: 'rgba(255,0,127,0.3)' }
-    : { accent: '#00FFFF', dim: 'rgba(0,255,255,0.07)', glow: 'rgba(0,255,255,0.3)', border: 'rgba(0,255,255,0.3)' };
+const theme = (type) =>
+    type === 'work'
+        ? { accent: '#FF007F', dim: 'rgba(255,0,127,0.08)', glow: 'rgba(255,0,127,0.35)', border: 'rgba(255,0,127,0.3)' }
+        : { accent: '#00FFFF', dim: 'rgba(0,255,255,0.07)', glow: 'rgba(0,255,255,0.3)', border: 'rgba(0,255,255,0.3)' };
 
 /* ═══════════════════════════════════════════════════════════
-   IMAGE PLACEHOLDER — CRT-styled placeholder for each item
+   IMAGE CAROUSEL
+   Accepts an images[] of { src?, label, sub }.
+   src = real URL → renders <img>; otherwise renders cyberpunk placeholder.
+   Hover shows prev/next arrows and pagination dots.
 ═══════════════════════════════════════════════════════════ */
-function ImagePlaceholder({ item, flip }) {
-    const t = theme(item.type);
+function ImageCarousel({ images, accent, icon: Icon }) {
+    const [idx, setIdx] = useState(0);
+    const [hovered, setHovered] = useState(false);
+    const [direction, setDirection] = useState(1); // 1=forward, -1=backward
+
+    const go = (delta) => {
+        setDirection(delta);
+        setIdx((prev) => (prev + delta + images.length) % images.length);
+    };
+
+    const current = images[idx];
+    const isReal = current.src && (current.src.startsWith('/') || current.src.startsWith('http'));
+
+    const slideVariants = {
+        enter: (d) => ({ x: d > 0 ? 50 : -50, opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (d) => ({ x: d > 0 ? -50 : 50, opacity: 0 }),
+    };
+
     return (
-        <motion.div
-            initial={{ opacity: 0, x: flip ? -40 : 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ type: 'spring', stiffness: 260, damping: 22, delay: 0.1 }}
+        <div
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
             style={{
                 flex: '0 0 clamp(160px, 28%, 240px)',
                 aspectRatio: '4/3',
-                background: item.imageBg,
-                border: `1px solid ${t.border}`,
-                borderRadius: 3,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.7rem',
                 position: 'relative',
+                borderRadius: 3,
                 overflow: 'hidden',
-                boxShadow: `0 0 30px ${t.glow}`,
+                border: `1px solid ${accent}55`,
+                boxShadow: `0 0 28px ${accent}33`,
+                background: '#050505',
+                cursor: 'pointer',
             }}
         >
-            {/* Scanline overlay */}
-            <div style={{
-                position: 'absolute', inset: 0,
-                background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px)',
-                pointerEvents: 'none',
-            }} />
+            {/* ── Slide ── */}
+            <AnimatePresence custom={direction} initial={false} mode="popLayout">
+                <motion.div
+                    key={idx}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ type: 'spring', stiffness: 340, damping: 30 }}
+                    style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+                >
+                    {isReal ? (
+                        <img
+                            src={current.src}
+                            alt={current.label}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        />
+                    ) : (
+                        /* Cyberpunk placeholder */
+                        <>
+                            {/* Diagonal grid lines */}
+                            <div style={{
+                                position: 'absolute', inset: 0,
+                                backgroundImage: `repeating-linear-gradient(45deg, ${accent}10 0px, ${accent}10 1px, transparent 1px, transparent 12px)`,
+                                pointerEvents: 'none',
+                            }} />
+                            {/* Scanlines */}
+                            <div style={{
+                                position: 'absolute', inset: 0,
+                                background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px)',
+                                pointerEvents: 'none',
+                            }} />
+                            {/* Corner brackets */}
+                            {[
+                                { top: 8, left: 8, borderTop: `1px solid ${accent}`, borderLeft: `1px solid ${accent}` },
+                                { top: 8, right: 8, borderTop: `1px solid ${accent}`, borderRight: `1px solid ${accent}` },
+                                { bottom: 8, left: 8, borderBottom: `1px solid ${accent}`, borderLeft: `1px solid ${accent}` },
+                                { bottom: 8, right: 8, borderBottom: `1px solid ${accent}`, borderRight: `1px solid ${accent}` },
+                            ].map((s, i) => (
+                                <span key={i} style={{ position: 'absolute', width: 14, height: 14, opacity: 0.7, ...s }} />
+                            ))}
+                            <Icon size={22} color={accent} style={{ opacity: 0.7, marginBottom: '0.5rem', position: 'relative', zIndex: 1 }} />
+                            <span style={{
+                                fontFamily: 'var(--font-mono)', fontSize: '0.6rem',
+                                color: accent, letterSpacing: '0.1em',
+                                textAlign: 'center', padding: '0 0.75rem',
+                                opacity: 0.85, position: 'relative', zIndex: 1,
+                            }}>
+                                {current.label}
+                            </span>
+                            <span style={{
+                                fontFamily: 'var(--font-mono)', fontSize: '0.55rem',
+                                color: 'rgba(255,255,255,0.3)', letterSpacing: '0.06em',
+                                marginTop: '0.3rem', position: 'relative', zIndex: 1,
+                                textAlign: 'center', padding: '0 0.5rem',
+                            }}>
+                                {current.sub}
+                            </span>
+                        </>
+                    )}
+                </motion.div>
+            </AnimatePresence>
 
-            {/* Corner brackets */}
-            {[
-                { top: 6, left: 6, borderTop: `1px solid ${t.accent}`, borderLeft: `1px solid ${t.accent}` },
-                { top: 6, right: 6, borderTop: `1px solid ${t.accent}`, borderRight: `1px solid ${t.accent}` },
-                { bottom: 6, left: 6, borderBottom: `1px solid ${t.accent}`, borderLeft: `1px solid ${t.accent}` },
-                { bottom: 6, right: 6, borderBottom: `1px solid ${t.accent}`, borderRight: `1px solid ${t.accent}` },
-            ].map((s, i) => (
-                <span key={i} style={{ position: 'absolute', width: 14, height: 14, ...s, opacity: 0.7 }} />
-            ))}
+            {/* ── Prev / Next arrows (hover only) ── */}
+            {images.length > 1 && (
+                <AnimatePresence>
+                    {hovered && (
+                        <>
+                            {[
+                                { side: 'left', delta: -1, Icon: ChevronLeft, style: { left: 4 } },
+                                { side: 'right', delta: 1, Icon: ChevronRight, style: { right: 4 } },
+                            ].map(({ side, delta, Icon: Arr, style: s }) => (
+                                <motion.button
+                                    key={side}
+                                    initial={{ opacity: 0, scale: 0.85 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.85 }}
+                                    transition={{ duration: 0.15 }}
+                                    onClick={(e) => { e.stopPropagation(); go(delta); }}
+                                    style={{
+                                        position: 'absolute', top: '50%', transform: 'translateY(-50%)',
+                                        ...s,
+                                        width: 28, height: 28,
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        background: 'rgba(0,0,0,0.7)',
+                                        border: `1px solid ${accent}55`,
+                                        borderRadius: 2,
+                                        color: accent,
+                                        cursor: 'pointer',
+                                        zIndex: 10,
+                                        boxShadow: `0 0 10px ${accent}33`,
+                                    }}
+                                >
+                                    <Arr size={14} />
+                                </motion.button>
+                            ))}
+                        </>
+                    )}
+                </AnimatePresence>
+            )}
 
-            <item.icon size={26} color={t.accent} style={{ opacity: 0.8 }} />
+            {/* ── Pagination dots (hover only) ── */}
+            {images.length > 1 && (
+                <AnimatePresence>
+                    {hovered && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 6 }}
+                            transition={{ duration: 0.15 }}
+                            style={{
+                                position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
+                                display: 'flex', gap: '0.35rem', zIndex: 10,
+                            }}
+                        >
+                            {images.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={(e) => { e.stopPropagation(); setDirection(i > idx ? 1 : -1); setIdx(i); }}
+                                    style={{
+                                        width: i === idx ? 16 : 6,
+                                        height: 4,
+                                        borderRadius: 2,
+                                        background: i === idx ? accent : `${accent}40`,
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        padding: 0,
+                                        boxShadow: i === idx ? `0 0 6px ${accent}` : 'none',
+                                        transition: 'width 0.25s, background 0.25s, box-shadow 0.25s',
+                                    }}
+                                />
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            )}
 
-            <span style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.6rem',
-                color: t.accent,
-                letterSpacing: '0.1em',
-                textAlign: 'center',
-                padding: '0 0.75rem',
-                opacity: 0.75,
-            }}>
-                {item.imageLabel}
-            </span>
-
-            <span style={{
-                position: 'absolute', bottom: 8, right: 8,
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.52rem',
-                color: 'rgba(255,255,255,0.2)',
-                letterSpacing: '0.06em',
-            }}>
-                {item.type === 'work' ? 'WORK_XP' : 'ACHIEVEMENT'}
-            </span>
-        </motion.div>
+            {/* Slide counter — always visible, tiny */}
+            {images.length > 1 && (
+                <div style={{
+                    position: 'absolute', top: 6, right: 8,
+                    fontFamily: 'var(--font-mono)', fontSize: '0.52rem',
+                    color: `${accent}99`, letterSpacing: '0.06em', zIndex: 5,
+                }}>
+                    {idx + 1}/{images.length}
+                </div>
+            )}
+        </div>
     );
 }
 
@@ -174,93 +310,59 @@ function TextCard({ item, flip }) {
                 overflow: 'hidden',
             }}
         >
-            {/* Subtle background tint */}
-            <div style={{
-                position: 'absolute', inset: 0,
-                background: t.dim,
-                pointerEvents: 'none',
-            }} />
+            <div style={{ position: 'absolute', inset: 0, background: t.dim, pointerEvents: 'none' }} />
 
             {/* Type badge */}
             <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.35rem',
-                padding: '0.2rem 0.65rem',
-                marginBottom: '0.9rem',
-                border: `1px solid ${t.border}`,
-                borderRadius: 2,
+                display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
+                padding: '0.2rem 0.65rem', marginBottom: '0.9rem',
+                border: `1px solid ${t.border}`, borderRadius: 2,
                 background: 'rgba(0,0,0,0.5)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.62rem',
-                fontWeight: 700,
-                letterSpacing: '0.1em',
-                color: t.accent,
-                textShadow: `0 0 8px ${t.accent}`,
+                fontFamily: 'var(--font-mono)', fontSize: '0.62rem',
+                fontWeight: 700, letterSpacing: '0.1em',
+                color: t.accent, textShadow: `0 0 8px ${t.accent}`,
             }}>
                 <Icon size={9} />
                 {item.type === 'work' ? 'WORK_EXPERIENCE' : 'ACHIEVEMENT'}
             </div>
 
-            {/* Title + Role + Date */}
             <div style={{ marginBottom: '0.9rem', position: 'relative' }}>
                 <h3 style={{
                     margin: '0 0 0.2rem',
                     fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
-                    fontWeight: 800,
-                    color: '#FFFFFF',
-                    fontFamily: 'var(--font-sans)',
-                    letterSpacing: '-0.02em',
+                    fontWeight: 800, color: '#FFFFFF',
+                    fontFamily: 'var(--font-sans)', letterSpacing: '-0.02em',
                 }}>
                     {item.title}
                 </h3>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                     <span style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.78rem',
-                        color: t.accent,
-                        fontWeight: 600,
-                        letterSpacing: '0.02em',
-                    }}>
-                        {item.role}
-                    </span>
+                        fontFamily: 'var(--font-mono)', fontSize: '0.78rem',
+                        color: t.accent, fontWeight: 600, letterSpacing: '0.02em',
+                    }}>{item.role}</span>
                     <span style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.65rem',
-                        color: 'rgba(255,255,255,0.28)',
-                        letterSpacing: '0.06em',
+                        fontFamily: 'var(--font-mono)', fontSize: '0.65rem',
+                        color: 'rgba(255,255,255,0.28)', letterSpacing: '0.06em',
                         padding: '0.1rem 0.5rem',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        borderRadius: 2,
-                    }}>
-                        {item.date}
-                    </span>
+                        border: '1px solid rgba(255,255,255,0.08)', borderRadius: 2,
+                    }}>{item.date}</span>
                 </div>
             </div>
 
-            {/* Description */}
             <p style={{
-                margin: '0 0 1rem',
-                fontSize: '0.875rem',
-                color: 'rgba(255,255,255,0.52)',
-                lineHeight: 1.75,
-                fontFamily: 'var(--font-sans)',
-                position: 'relative',
+                margin: '0 0 1rem', fontSize: '0.875rem',
+                color: 'rgba(255,255,255,0.52)', lineHeight: 1.75,
+                fontFamily: 'var(--font-sans)', position: 'relative',
             }}>
                 {item.description}
             </p>
 
-            {/* Bullet list */}
             <ul style={{ margin: 0, padding: 0, listStyle: 'none', position: 'relative' }}>
                 {item.bullets.map((b, i) => (
                     <li key={i} style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '0.55rem',
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.75rem',
-                        color: 'rgba(255,255,255,0.45)',
-                        lineHeight: 1.65,
+                        display: 'flex', alignItems: 'flex-start', gap: '0.55rem',
+                        fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
+                        color: 'rgba(255,255,255,0.45)', lineHeight: 1.65,
                         marginBottom: i < item.bullets.length - 1 ? '0.35rem' : 0,
                     }}>
                         <span style={{ color: t.accent, flexShrink: 0, marginTop: '0.1em' }}>›</span>
@@ -273,41 +375,25 @@ function TextCard({ item, flip }) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   TIMELINE NODE (glowing dot on the SVG path)
+   TIMELINE NODE (glowing dot on SVG path)
 ═══════════════════════════════════════════════════════════ */
 function TimelineNode({ type, cy, cx }) {
     const t = theme(type);
     return (
         <g>
-            {/* Outer pulse ring */}
-            <circle cx={cx} cy={cy} r={13}
-                fill="none"
-                stroke={t.accent}
-                strokeWidth={0.8}
-                opacity={0.25}
-            />
-            {/* Mid ring */}
-            <circle cx={cx} cy={cy} r={8}
-                fill="rgba(0,0,0,0.85)"
-                stroke={t.accent}
-                strokeWidth={1.2}
-                style={{ filter: `drop-shadow(0 0 6px ${t.accent})` }}
-            />
-            {/* Core dot */}
-            <circle cx={cx} cy={cy} r={3.5}
-                fill={t.accent}
-                style={{ filter: `drop-shadow(0 0 5px ${t.accent})` }}
-            />
+            <circle cx={cx} cy={cy} r={13} fill="none" stroke={t.accent} strokeWidth={0.8} opacity={0.25} />
+            <circle cx={cx} cy={cy} r={8} fill="rgba(0,0,0,0.85)" stroke={t.accent} strokeWidth={1.2}
+                style={{ filter: `drop-shadow(0 0 6px ${t.accent})` }} />
+            <circle cx={cx} cy={cy} r={3.5} fill={t.accent}
+                style={{ filter: `drop-shadow(0 0 5px ${t.accent})` }} />
         </g>
     );
 }
 
 /* ═══════════════════════════════════════════════════════════
-   WINDING SVG PATH + SCROLL DRAW
-   SVG sits absolutely in the center column of the grid.
-   useScroll on the container drives strokeDashoffset.
+   WINDING SVG PATH
 ═══════════════════════════════════════════════════════════ */
-function WindingPath({ containerRef, nodeYs, itemCount }) {
+function WindingPath({ containerRef, itemCount }) {
     const svgRef = useRef(null);
     const [pathLength, setPathLength] = useState(0);
     const [svgH, setSvgH] = useState(0);
@@ -316,36 +402,34 @@ function WindingPath({ containerRef, nodeYs, itemCount }) {
         target: containerRef,
         offset: ['start 80%', 'end 40%'],
     });
-
     const rawProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 22, restDelta: 0.001 });
 
-    useEffect(() => {
+    // measure on mount + resize
+    const measure = () => {
         const svg = svgRef.current;
         if (!svg) return;
+        const rect = svg.getBoundingClientRect();
+        setSvgH(rect.height);
+        const path = svg.querySelector('.winding-path');
+        if (path) setPathLength(path.getTotalLength());
+    };
 
-        const measure = () => {
-            const rect = svg.getBoundingClientRect();
-            setSvgH(rect.height);
-            const path = svg.querySelector('.winding-path');
-            if (path) setPathLength(path.getTotalLength());
-        };
+    // We use a callback ref to measure after render
+    const svgCallbackRef = (node) => {
+        svgRef.current = node;
+        if (node) {
+            setTimeout(measure, 50);
+        }
+    };
 
-        measure();
-        window.addEventListener('resize', measure);
-        return () => window.removeEventListener('resize', measure);
-    }, []);
-
-    // Build the sine-wave-ish path
-    // SVG viewBox width = 60 (narrow center column), center at x=30
     const W = 60;
     const cx = W / 2;
-    const amplitude = 14; // how far left/right the wave swings
-    const itemCount2 = itemCount || 3;
-    const segH = svgH > 0 ? svgH / itemCount2 : 300;
+    const amplitude = 14;
+    const n = itemCount || 3;
+    const segH = svgH > 0 ? svgH / n : 300;
 
-    // Build a smooth cubic Bezier path weaving left <-> right at each item
     let d = `M ${cx} 0`;
-    for (let i = 0; i < itemCount2; i++) {
+    for (let i = 0; i < n; i++) {
         const y0 = i * segH;
         const y1 = (i + 0.5) * segH;
         const y2 = (i + 1) * segH;
@@ -354,53 +438,16 @@ function WindingPath({ containerRef, nodeYs, itemCount }) {
         d += ` C ${xPeak} ${y1 + segH * 0.1}, ${cx} ${y2 - segH * 0.25}, ${cx} ${y2}`;
     }
 
-    // Node Y positions as fraction of svgH
-    const nodePositions = Array.from({ length: itemCount2 }, (_, i) => (i + 0.5) * segH);
-
-    // dashoffset: start at full length (hidden), animate to 0 (fully drawn)
+    const nodePositions = Array.from({ length: n }, (_, i) => (i + 0.5) * segH);
     const dashOffset = useTransform(rawProgress, [0, 1], [pathLength, 0]);
 
     return (
         <svg
-            ref={svgRef}
+            ref={svgCallbackRef}
             viewBox={`0 0 ${W} ${svgH > 0 ? svgH : 1200}`}
             preserveAspectRatio="none"
-            style={{
-                position: 'absolute',
-                top: 0,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: 60,
-                height: '100%',
-                overflow: 'visible',
-                zIndex: 0,
-                pointerEvents: 'none',
-            }}
+            style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 60, height: '100%', overflow: 'visible', zIndex: 0, pointerEvents: 'none' }}
         >
-            {/* Base dim path */}
-            <path
-                d={d}
-                fill="none"
-                stroke="rgba(255,255,255,0.05)"
-                strokeWidth={1.5}
-            />
-
-            {/* Animated glowing draw path */}
-            <motion.path
-                className="winding-path"
-                d={d}
-                fill="none"
-                stroke="url(#streamGrad)"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeDasharray={pathLength || 9999}
-                style={{
-                    strokeDashoffset: dashOffset,
-                    filter: 'drop-shadow(0 0 4px rgba(255,0,127,0.7)) drop-shadow(0 0 10px rgba(0,255,255,0.4))',
-                }}
-            />
-
-            {/* Gradient definition */}
             <defs>
                 <linearGradient id="streamGrad" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
                     <stop offset="0%" stopColor="#FF007F" />
@@ -408,15 +455,15 @@ function WindingPath({ containerRef, nodeYs, itemCount }) {
                     <stop offset="100%" stopColor="#00FFFF" />
                 </linearGradient>
             </defs>
-
-            {/* Nodes */}
+            <path d={d} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth={1.5} />
+            <motion.path
+                className="winding-path"
+                d={d} fill="none" stroke="url(#streamGrad)" strokeWidth={2} strokeLinecap="round"
+                strokeDasharray={pathLength || 9999}
+                style={{ strokeDashoffset: dashOffset, filter: 'drop-shadow(0 0 4px rgba(255,0,127,0.7)) drop-shadow(0 0 10px rgba(0,255,255,0.4))' }}
+            />
             {nodePositions.map((ny, i) => (
-                <TimelineNode
-                    key={i}
-                    type={EXPERIENCES[i]?.type ?? 'work'}
-                    cy={ny}
-                    cx={cx}
-                />
+                <TimelineNode key={i} type={EXPERIENCES[i]?.type ?? 'work'} cy={ny} cx={cx} />
             ))}
         </svg>
     );
@@ -433,43 +480,21 @@ export default function Experience() {
             <section style={{ padding: '0 clamp(1rem, 4vw, 4rem) 5rem' }}>
                 <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
-                    {/* ── Page header ── */}
+                    {/* Page header */}
                     <motion.div
                         initial={{ opacity: 0, y: 18 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                         style={{ marginBottom: '3.5rem' }}
                     >
-                        <div style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.72rem',
-                            color: '#22C55E',
-                            letterSpacing: '0.1em',
-                            marginBottom: '0.6rem',
-                            textShadow: '0 0 8px rgba(34,197,94,0.5)',
-                        }}>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#22C55E', letterSpacing: '0.1em', marginBottom: '0.6rem', textShadow: '0 0 8px rgba(34,197,94,0.5)' }}>
                             &gt; cat ./experience.log
                         </div>
-                        <h1 style={{
-                            fontSize: 'clamp(2rem, 5vw, 3rem)',
-                            fontWeight: 900,
-                            color: '#FFFFFF',
-                            margin: 0,
-                            letterSpacing: '-0.03em',
-                            fontFamily: 'var(--font-sans)',
-                        }}>
+                        <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.03em', fontFamily: 'var(--font-sans)' }}>
                             Experience &amp; Achievements
                         </h1>
-                        <div style={{
-                            display: 'flex',
-                            gap: '1.5rem',
-                            marginTop: '0.75rem',
-                            flexWrap: 'wrap',
-                        }}>
-                            {[
-                                { label: 'WORK_XP', color: '#FF007F' },
-                                { label: 'ACHIEVEMENT', color: '#00FFFF' },
-                            ].map(({ label, color }) => (
+                        <div style={{ display: 'flex', gap: '1.5rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
+                            {[{ label: 'WORK_XP', color: '#FF007F' }, { label: 'ACHIEVEMENT', color: '#00FFFF' }].map(({ label, color }) => (
                                 <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                                     <span style={{ width: 8, height: 8, borderRadius: '50%', background: color, boxShadow: `0 0 6px ${color}`, flexShrink: 0 }} />
                                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.08em' }}>{label}</span>
@@ -478,57 +503,33 @@ export default function Experience() {
                         </div>
                     </motion.div>
 
-                    {/* ── Timeline container ── */}
-                    <div
-                        ref={containerRef}
-                        style={{
-                            position: 'relative',
-                            // On desktop: invisible center column for SVG sits between cards
-                        }}
-                    >
-                        {/* ── SVG Winding Path — desktop only ── */}
-                        <div
-                            aria-hidden
-                            style={{
-                                display: 'none',   // hidden on mobile
-                                position: 'absolute',
-                                top: 0, bottom: 0,
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                width: 60,
-                                pointerEvents: 'none',
-                                zIndex: 0,
-                            }}
-                            className="winding-svg-col"
-                        >
-                            <WindingPath
-                                containerRef={containerRef}
-                                itemCount={EXPERIENCES.length}
-                            />
+                    {/* Timeline container */}
+                    <div ref={containerRef} style={{ position: 'relative' }}>
+
+                        {/* SVG winding path — desktop only */}
+                        <div aria-hidden className="winding-svg-col" style={{ display: 'none', position: 'absolute', top: 0, bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 60, pointerEvents: 'none', zIndex: 0 }}>
+                            <WindingPath containerRef={containerRef} itemCount={EXPERIENCES.length} />
                         </div>
 
-                        {/* ── Items ── */}
+                        {/* Items */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '3.5rem' }}>
                             {EXPERIENCES.map((item, i) => {
+                                const t = theme(item.type);
                                 const isEven = i % 2 === 0;
-                                // even: Text LEFT, Image RIGHT
-                                // odd:  Image LEFT, Text RIGHT
                                 return (
-                                    <div
+                                    <motion.div
                                         key={i}
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',  // mobile: stacked
-                                            gap: '1rem',
-                                            position: 'relative',
-                                            zIndex: 1,
-                                        }}
+                                        initial={{ opacity: 0 }}
+                                        whileInView={{ opacity: 1 }}
+                                        viewport={{ once: true, margin: '-50px' }}
+                                        transition={{ duration: 0.3 }}
                                         className={`timeline-row ${isEven ? 'row-even' : 'row-odd'}`}
+                                        style={{ display: 'flex', flexDirection: 'column', gap: '1rem', position: 'relative', zIndex: 1 }}
                                     >
-                                        {/* Mobile: Image → Text. Desktop handled by CSS below */}
-                                        <ImagePlaceholder item={item} flip={!isEven} />
+                                        {/* Mobile: carousel first, then text */}
+                                        <ImageCarousel images={item.images} accent={t.accent} icon={item.icon} />
                                         <TextCard item={item} flip={isEven} />
-                                    </div>
+                                    </motion.div>
                                 );
                             })}
                         </div>
@@ -536,43 +537,19 @@ export default function Experience() {
                 </div>
             </section>
 
-            {/* Inline CSS for desktop alternating + showing the SVG column */}
             <style>{`
                 @media (min-width: 768px) {
-                    .winding-svg-col {
-                        display: block !important;
-                    }
+                    .winding-svg-col { display: block !important; }
                     .timeline-row {
                         flex-direction: row !important;
                         align-items: center;
                         gap: 0 !important;
-                        /* Leave a 60px gap in the center for the SVG */
                         padding: 0 calc(30px + 1.5rem);
                     }
-                    /* Even: Text left, Image right */
-                    .timeline-row.row-even {
-                        flex-direction: row !important;
-                    }
-                    .timeline-row.row-even > *:first-child {
-                        order: 2;   /* ImagePlaceholder goes RIGHT */
-                        margin-left: 1.5rem;
-                    }
-                    .timeline-row.row-even > *:last-child {
-                        order: 1;   /* TextCard stays LEFT */
-                        margin-right: 1.5rem;
-                    }
-                    /* Odd: Image left, Text right */
-                    .timeline-row.row-odd {
-                        flex-direction: row !important;
-                    }
-                    .timeline-row.row-odd > *:first-child {
-                        order: 1;   /* ImagePlaceholder is LEFT */
-                        margin-right: 1.5rem;
-                    }
-                    .timeline-row.row-odd > *:last-child {
-                        order: 2;   /* TextCard is RIGHT */
-                        margin-left: 1.5rem;
-                    }
+                    .timeline-row.row-even > *:first-child { order: 2; margin-left: 1.5rem; }
+                    .timeline-row.row-even > *:last-child  { order: 1; margin-right: 1.5rem; }
+                    .timeline-row.row-odd  > *:first-child { order: 1; margin-right: 1.5rem; }
+                    .timeline-row.row-odd  > *:last-child  { order: 2; margin-left: 1.5rem; }
                 }
             `}</style>
         </PageShell>
