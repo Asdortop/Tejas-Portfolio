@@ -288,7 +288,7 @@ function SystemBioBlock() {
    Framer Motion spring (stiffness 300, damping 20) for scale.
 ═══════════════════════════════════════════════════════════ */
 const DEFAULT_IMG = '/Tejas_G .jpeg';
-const DIMENSION_IMG = '/3b4a8793-f31e-4617-bf7c-8544b6563208.jpg';
+const DIMENSION_IMG = '/nano_banana_removed.png';
 
 // Glitch-flash overlay that renders for ~360ms during the swap
 function GlitchFlash() {
