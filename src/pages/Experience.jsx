@@ -11,28 +11,9 @@ import { Briefcase, Trophy, Server, Leaf, Award, ChevronLeft, ChevronRight } fro
 const EXPERIENCES = [
     {
         type: 'work',
-        title: 'Alfago Research LLP',
-        role: 'Backend Intern',
-        date: 'Jul 2024 – Sep 2024',
-        description:
-            'Designed and built a Portfolio Management backend from scratch. Containerised the full service stack with Docker and deployed to AWS for production availability and on-demand horizontal scaling.',
-        bullets: [
-            'Architected RESTful API with FastAPI + PostgreSQL',
-            'Docker Compose orchestration for local & staging environments',
-            'AWS EC2/S3 deployment pipeline with environment-based config',
-        ],
-        icon: Server,
-        images: [
-            { label: 'BACKEND_ARCH', sub: 'System design overview' },
-            { label: 'DOCKER_STACK', sub: 'Container orchestration' },
-            { label: 'AWS_DEPLOY', sub: 'Cloud deployment pipeline' },
-        ],
-    },
-    {
-        type: 'work',
         title: 'Infosys Springboard',
         role: 'AI / ML Intern',
-        date: 'May 2024 – Jul 2024',
+        date: 'Nov 2025 – Dec 2025',
         description:
             'Engineered an AgriYield Prediction system using ensemble ML models. Improved forecast precision by 15% over baseline through rigorous feature engineering and model stacking.',
         bullets: [
@@ -40,7 +21,6 @@ const EXPERIENCES = [
             'Feature engineering: soil, weather, crop-type embeddings',
             '15% precision gain over naive baseline (RMSE metric)',
         ],
-        icon: Leaf,
         images: [
             { label: 'MODEL_PIPELINE', sub: 'ML training pipeline' },
             { label: 'FEATURE_ENG', sub: 'Feature correlation map' },
@@ -48,42 +28,106 @@ const EXPERIENCES = [
         ],
     },
     {
-        type: 'achievement',
-        title: 'Google Solution Challenge 2024',
-        role: 'Global Finalist',
-        date: '2024',
+        type: 'work',
+        title: 'Alfago Research LLP',
+        role: 'Backend Intern',
+        date: 'Sep 2025 – Nov 2025',
         description:
-            "Selected among the top 20% of global submissions in Google's flagship student developer challenge. Competed against thousands of university teams worldwide.",
+            'Designed and built a Portfolio Management backend from scratch. Containerised the full service stack with Docker and deployed to AWS for production availability and on-demand horizontal scaling.',
         bullets: [
-            'Top 20% globally — competitive pool of 10 000+ teams',
-            'Built a full-stack AI solution addressing a UN SDG',
-            'Evaluated by Google engineers on impact and technical depth',
+            'Architected RESTful API with FastAPI + PostgreSQL',
+            'Docker Compose orchestration for local & staging environments',
+            'AWS EC2/S3 deployment pipeline with environment-based config',
         ],
-        icon: Award,
         images: [
-            { label: 'GSC_CERTIFICATE', sub: 'Official finalist certificate' },
-            { label: 'PROJECT_DEMO', sub: 'Solution demo screen' },
-            { label: 'TEAM_PHOTO', sub: 'Team at submission' },
+            { label: 'BACKEND_ARCH', sub: 'System design overview' },
+            { label: 'DOCKER_STACK', sub: 'Container orchestration' },
+            { label: 'AWS_DEPLOY', sub: 'Cloud deployment pipeline' },
         ],
     },
-    {
+        {
         type: 'achievement',
         title: 'Turing Cup 2025',
         role: 'Finalist',
-        date: '2025',
+        date: 'Apr 2025',
         description:
             'Reached the finals of Turing Cup 2025, demonstrating advanced AI problem-solving and system design under competitive conditions.',
         bullets: [
             'Advanced through qualification and semi-final rounds',
-            'AI-focused challenges: optimization, reasoning, agents',
             'Peer cohort of top engineering students nationwide',
         ],
-        icon: Trophy,
         images: [
             { label: 'FINALIST_BADGE', sub: 'Finalist recognition' },
             { label: 'CHALLENGE_UI', sub: 'Competition interface' },
         ],
     },
+    {
+        type: 'achievement',
+        title: 'Hackindia Hackathon',
+        role: 'Regional Semifinalist',
+        date: 'Apr 2025',
+        description:
+            'Advanced to the regional semi-finals by building an AI-powered assistant that makes finding and understanding enterprise documents effortless, bridging the gap between raw data and fast decision-making.',
+        bullets: [
+            'Built a smart search tool allowing users to find information using natural questions instead of rigid keywords.',
+            'Developed automated summaries and visual search to give users immediate, context-aware answers.',
+        ],
+        images: [
+            { label: 'HACKINDIA_BADGE', sub: 'Regional semi-finalist recognition' },
+            { label: 'RAG_ARCHITECTURE', sub: 'System design overview' },
+        ],
+    },
+    {
+        type: 'achievement',
+        title: 'Webathon',
+        role: 'Finalist',
+        date: 'Apr 2025',
+        description:
+            'Competed in an intensive web development hackathon, reaching the finals by designing and building a comprehensive Book Management System.',
+        bullets: [
+            'Developed a full-stack Book Management System from concept to deployment',
+            'Implemented an intuitive UI/UX for seamless digital library administration',
+            'Secured a finalist position among a competitive pool of web developers',
+        ],
+        images: [
+            { label: 'DASHBOARD_UI', sub: 'Book management dashboard' },
+            { label: 'WEBATHON_BADGE', sub: 'Finalist recognition' },
+        ],
+    },
+    {
+        type: 'achievement',
+        title: 'Google Solution Challenge 2025',
+        role: 'Finalist',
+        date: 'Feb 2025',
+        description:
+            'Reached the finals by engineering a real-world healthcare accessibility platform aimed at bridging the medical divide for rural communities.',
+        bullets: [
+            'Built a digital solution providing easier healthcare access in rural areas',
+            'Addressed critical real-world challenges aligned with UN Sustainable Development Goals',
+            'Recognized as a finalist for project impact and technical execution',
+        ],
+        images: [
+            { label: 'HEALTHCARE_UI', sub: 'Platform interface' },
+            { label: 'GSC_FINALIST', sub: '2025 Finalist certificate' },
+        ],
+    },
+    {
+        type: 'achievement',
+        title: 'Codenox 2.0',
+        role: 'Semi-Finalist',
+        date: 'Nov 2024',
+        description:
+            'Competed in the Codenox coding competition, advancing to the semi-finals by demonstrating strong algorithmic problem-solving and competitive programming skills.',
+        bullets: [
+            'Advanced to the semi-finals in a highly competitive coding tournament',
+            'Demonstrated proficiency in data structures and algorithmic optimization',
+            'Solved complex programming challenges under strict time constraints',
+        ],
+        images: [
+            { label: 'CODENOX_BADGE', sub: 'Semi-finalist recognition' },
+            { label: 'LEADERBOARD', sub: 'Competition ranking' },
+        ],
+    }
 ];
 
 /* ── per-type theme helpers ──────────────────────────────── */
@@ -527,7 +571,7 @@ export default function Experience() {
                                         style={{ display: 'flex', flexDirection: 'column', gap: '1rem', position: 'relative', zIndex: 1 }}
                                     >
                                         {/* Mobile: carousel first, then text */}
-                                        <ImageCarousel images={item.images} accent={t.accent} icon={item.icon} />
+                                        <ImageCarousel images={item.images} accent={t.accent} icon={item.type === 'work' ? Briefcase : Trophy} />
                                         <TextCard item={item} flip={isEven} />
                                     </motion.div>
                                 );

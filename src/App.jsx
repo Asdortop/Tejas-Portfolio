@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 import Navbar from './components/Navbar';
-import TerminalFooter from './components/TerminalFooter';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import Skills from './pages/Skills';
@@ -32,7 +31,6 @@ export default function App() {
         <div style={{ flex: 1 }}>
           <AnimatedRoutes />
         </div>
-        <TerminalFooter />
       </div>
     </BrowserRouter>
   );
