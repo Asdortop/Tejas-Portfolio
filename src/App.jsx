@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 import Navbar from './components/Navbar';
+import TerminalFooter from './components/TerminalFooter';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import Skills from './pages/Skills';
@@ -26,9 +27,12 @@ export default function App() {
   return (
     <BrowserRouter>
       {/* background set globally on body via index.css */}
-      <div style={{ minHeight: '100vh' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Navbar />
-        <AnimatedRoutes />
+        <div style={{ flex: 1 }}>
+          <AnimatedRoutes />
+        </div>
+        <TerminalFooter />
       </div>
     </BrowserRouter>
   );

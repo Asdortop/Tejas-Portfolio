@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
-import { Terminal, Cpu, GitBranch, ExternalLink } from 'lucide-react';
+import { Terminal, Cpu, GitBranch, Github } from 'lucide-react';
 
 /* ─────────────────────────────────────────────
    Stage helpers
@@ -32,7 +32,7 @@ function SereneView({ stateA, tags }) {
     return (
         <motion.div key="serene" variants={fadeSlide} initial="initial" animate="animate" exit="exit"
             className="flex flex-col gap-4">
-            <p className="leading-relaxed text-base" style={{ color: 'rgba(248,250,252,0.72)', fontFamily: 'var(--font-sans)' }}>
+            <p className="leading-relaxed text-base line-clamp-4" style={{ color: 'rgba(248,250,252,0.72)', fontFamily: 'var(--font-sans)' }}>
                 {stateA}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -181,7 +181,7 @@ function GlitchView({ stateB, tags, title, image }) {
 /* ─────────────────────────────────────────────
    Main ProjectCard Component
 ───────────────────────────────────────────── */
-export default function ProjectCard({ title, stateA, stateB, tags, image, index }) {
+export default function ProjectCard({ title, stateA, stateB, tags, image, index, githubUrl }) {
     const [depth, setDepth] = useState(0);
     const stage = getStage(depth);
 
@@ -238,8 +238,7 @@ export default function ProjectCard({ title, stateA, stateB, tags, image, index 
             }}
             style={{
                 width: '100%',
-                maxWidth: stageMaxWidth,
-                minWidth: 300,
+                height: '100%',
                 background: bgColor,
                 borderColor: borderColorMV,
                 borderWidth: stage === 3 ? 2 : 1,
@@ -250,15 +249,19 @@ export default function ProjectCard({ title, stateA, stateB, tags, image, index 
                 transition: 'box-shadow 0.5s ease, border-radius 0.4s ease, border-width 0.3s ease',
             }}
         >
-            <div className="relative p-6 flex flex-col gap-5">
+            <div className="relative p-6 flex flex-col gap-5 h-full">
 
                 {/* Header */}
                 <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                        {stage === 3
-                            ? <Cpu size={20} style={{ color: '#D946EF' }} />
-                            : <GitBranch size={20} style={{ color: '#2DD4BF' }} />
-                        }
+                    <div className="flex items-start gap-3 min-w-0">
+                        {/* Icon — never shrinks */}
+                        <div className="shrink-0 mt-1">
+                            {stage === 3
+                                ? <Cpu size={20} style={{ color: '#D946EF' }} />
+                                : <GitBranch size={20} style={{ color: '#2DD4BF' }} />
+                            }
+                        </div>
+                        {/* Title — wraps freely */}
                         <motion.h3
                             className="font-bold text-lg leading-tight"
                             style={{
@@ -270,17 +273,27 @@ export default function ProjectCard({ title, stateA, stateB, tags, image, index 
                             {stage === 3 ? `> ${title.toUpperCase()}` : title}
                         </motion.h3>
                     </div>
-                    <ExternalLink
-                        size={16}
-                        className="shrink-0 mt-0.5 cursor-pointer"
-                        style={{
-                            color: stage === 3 ? '#D946EF' : 'rgba(248,250,252,0.3)',
-                            opacity: 0.7,
-                            transition: 'opacity 0.2s, color 0.2s',
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.opacity = 1; }}
-                        onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; }}
-                    />
+                    {githubUrl && (
+                        <a
+                            href={githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="shrink-0 mt-0.5"
+                            style={{ display: 'flex', lineHeight: 0 }}
+                        >
+                            <Github
+                                size={16}
+                                style={{
+                                    color: stage === 3 ? '#D946EF' : 'rgba(248,250,252,0.3)',
+                                    opacity: 0.7,
+                                    transition: 'opacity 0.2s, color 0.2s',
+                                    cursor: 'pointer',
+                                }}
+                                onMouseEnter={e => { e.currentTarget.style.opacity = 1; }}
+                                onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; }}
+                            />
+                        </a>
+                    )}
                 </div>
 
                 {/* Stage badge */}
@@ -296,8 +309,8 @@ export default function ProjectCard({ title, stateA, stateB, tags, image, index 
                     </span>
                 </div>
 
-                {/* Animated content */}
-                <div className="min-h-[190px]">
+                {/* Animated content — flex-1 grows to fill available space, pushing slider to bottom */}
+                <div className="flex-1 overflow-hidden" style={{ minHeight: '140px' }}>
                     <AnimatePresence mode="wait">
                         {stage === 1 && <SereneView key="serene" stateA={stateA} tags={tags} />}
                         {stage === 2 && <ImageView key="image" image={image} title={title} />}
