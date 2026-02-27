@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence, useSpring, useTransform } from 'framer-motion';
-import { ArrowRight, Github, Linkedin, Mail, Layers } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail, Layers, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { PageShell } from '../components/PageShell';
 
@@ -209,10 +209,10 @@ function GlitchText({ children, style }) {
    MARQUEE STATUS BAR
    Fast-scrolling horizontal strip with repeating terminal tags.
 ═══════════════════════════════════════════════════════════ */
-const MARQUEE_TEXT = 'AI/LLM ENTHUSIAST // ML ENGINEER // BACKEND ARCHITECT // DEEP LEARNING RESEARCHER // AGENTIC AI BUILDER // ';
+const MARQUEE_TEXT = 'AI/LLM ENTHUSIAST // ML ENGINEER // BACKEND ARCHITECT // DEEP LEARNING RESEARCHER // ';
 
 function MarqueeBar() {
-    const repeated = MARQUEE_TEXT.repeat(8);
+    const repeated = MARQUEE_TEXT.repeat(5);
     return (
         <div
             style={{
@@ -275,6 +275,123 @@ function SystemBioBlock() {
             <div>&gt;&nbsp; and scalable backend architectures.</div>
             <div style={{ marginTop: '0.3rem', opacity: 0.55, fontSize: '0.68rem', color: '#00FFFF', letterSpacing: '0.08em' }}>
                 └───────────────────────────────────────────────
+            </div>
+        </motion.div>
+    );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESUME SECTION
+   Embeds the PDF + download / open button.
+   Place your resume at: /public/resume.pdf
+═══════════════════════════════════════════════════════════ */
+function ResumeSection() {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 20, delay: 0.5 }}
+            style={{ marginTop: '3rem', maxWidth: 860 }}
+        >
+            {/* Section label */}
+            <div style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.68rem',
+                color: '#FF007F',
+                letterSpacing: '0.12em',
+                marginBottom: '0.75rem',
+                textShadow: '0 0 8px rgba(255,0,127,0.5)',
+            }}>
+                &gt; cat ./resume.pdf
+            </div>
+
+            {/* PDF embed */}
+            <div style={{
+                width: '100%',
+                height: 'clamp(420px, 55vh, 640px)',
+                border: '1px solid rgba(255,0,127,0.2)',
+                borderTop: '2px solid #FF007F',
+                borderRadius: 3,
+                overflow: 'hidden',
+                background: '#050508',
+                boxShadow: '0 0 40px rgba(255,0,127,0.07)',
+                position: 'relative',
+            }}>
+                <iframe
+                    src="/resume.pdf#toolbar=0&navpanes=0"
+                    title="Resume"
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        border: 'none',
+                        display: 'block',
+                    }}
+                />
+                {/* Overlay gradient at bottom */}
+                <div style={{
+                    position: 'absolute',
+                    bottom: 0, left: 0, right: 0,
+                    height: 40,
+                    background: 'linear-gradient(to top, #050508, transparent)',
+                    pointerEvents: 'none',
+                }} />
+            </div>
+
+            {/* Action buttons */}
+            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.9rem', flexWrap: 'wrap' }}>
+                <a
+                    href="/resume.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                        padding: '0.55rem 1.3rem',
+                        fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 700,
+                        letterSpacing: '0.06em',
+                        background: '#FF007F',
+                        color: '#000',
+                        borderRadius: 2,
+                        textDecoration: 'none',
+                        boxShadow: '0 0 16px rgba(255,0,127,0.4)',
+                        transition: 'transform 0.15s, box-shadow 0.15s',
+                    }}
+                    onMouseEnter={e => {
+                        e.currentTarget.style.transform = 'translate(-2px,-2px)';
+                        e.currentTarget.style.boxShadow = '4px 4px 0 #00FFFF, 0 0 24px rgba(255,0,127,0.55)';
+                    }}
+                    onMouseLeave={e => {
+                        e.currentTarget.style.transform = '';
+                        e.currentTarget.style.boxShadow = '0 0 16px rgba(255,0,127,0.4)';
+                    }}
+                >
+                    <ArrowRight size={13} /> VIEW FULL
+                </a>
+                <a
+                    href="/resume.pdf"
+                    download
+                    style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                        padding: '0.53rem 1.3rem',
+                        fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600,
+                        letterSpacing: '0.06em',
+                        background: 'transparent',
+                        color: '#FF007F',
+                        border: '1px solid rgba(255,0,127,0.35)',
+                        borderRadius: 2,
+                        textDecoration: 'none',
+                        transition: 'border-color 0.2s, color 0.2s, transform 0.15s',
+                    }}
+                    onMouseEnter={e => {
+                        e.currentTarget.style.borderColor = '#FF007F';
+                        e.currentTarget.style.transform = 'translate(-1px,-1px)';
+                    }}
+                    onMouseLeave={e => {
+                        e.currentTarget.style.borderColor = 'rgba(255,0,127,0.35)';
+                        e.currentTarget.style.transform = '';
+                    }}
+                >
+                    <Download size={13} /> DOWNLOAD
+                </a>
             </div>
         </motion.div>
     );
@@ -585,7 +702,7 @@ function HeroSection() {
                 >
                     View Projects <ArrowRight size={15} />
                 </Link>
-                <a href="mailto:tejashguduru@gmail.com"
+                <a href="mailto:tejas.gvsb@gmail.com"
                     style={{
                         display: 'inline-flex', alignItems: 'center', gap: '0.45rem',
                         padding: '0.76rem 1.8rem', borderRadius: 2,
@@ -616,8 +733,8 @@ function HeroSection() {
             <motion.div variants={heroItem}
                 style={{ display: 'flex', gap: '0.9rem' }}>
                 {[
-                    { href: 'https://github.com/tejasguduru', icon: Github, label: 'GitHub' },
-                    { href: 'https://linkedin.com/in/tejasguduru', icon: Linkedin, label: 'LinkedIn' },
+                    { href: 'https://github.com/Asdortop', icon: Github, label: 'GitHub' },
+                    { href: 'https://www.linkedin.com/in/tejas2903', icon: Linkedin, label: 'LinkedIn' },
                 ].map(({ href, icon: Icon, label }) => (
                     <a key={label} href={href} target="_blank" rel="noreferrer"
                         aria-label={label}
@@ -654,8 +771,14 @@ function HeroSection() {
    HOME  (root export)
 ═══════════════════════════════════════════════════════════ */
 export default function Home() {
-    const [booted, setBooted] = useState(false);
-    const onDone = useCallback(() => setBooted(true), []);
+    // Only show the boot sequence once per browser session
+    const [booted, setBooted] = useState(
+        () => sessionStorage.getItem('portfolio_booted') === 'true'
+    );
+    const onDone = useCallback(() => {
+        sessionStorage.setItem('portfolio_booted', 'true');
+        setBooted(true);
+    }, []);
 
     return (
         <>
@@ -698,6 +821,9 @@ export default function Home() {
 
                                 {/* ── System Bio block ── */}
                                 <SystemBioBlock />
+
+                                {/* ── Resume section ── */}
+                                <ResumeSection />
                             </section>
                         </PageShell>
                     </motion.div>
